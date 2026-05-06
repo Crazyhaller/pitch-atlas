@@ -1,26 +1,495 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* =========================
+     CORE COLORS
+  ========================== */
+
+  --background: #050816;
+  --foreground: #f5f7fa;
+
+  --card: rgba(13, 20, 38, 0.82);
+  --card-foreground: #f8fafc;
+
+  --popover: #0d1426;
+  --popover-foreground: #f8fafc;
+
+  --primary: #38ff9c;
+  --primary-foreground: #04110b;
+
+  --secondary: #121a30;
+  --secondary-foreground: #f5f7fa;
+
+  --muted: #1a2440;
+  --muted-foreground: #94a3b8;
+
+  --accent: #72ffbf;
+  --accent-foreground: #04110b;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.06);
+  --ring: rgba(56, 255, 156, 0.5);
+
+  /* =========================
+     STADIUM THEME
+  ========================== */
+
+  --pitch-primary: #0d5f33;
+  --pitch-secondary: #1ea85d;
+  --pitch-line: rgba(255, 255, 255, 0.1);
+
+  --stadium-glow: rgba(56, 255, 156, 0.18);
+  --stadium-shadow: rgba(0, 0, 0, 0.45);
+
+  --heat-low: #38ff9c;
+  --heat-mid: #d9ff3f;
+  --heat-high: #ff6b3d;
+
+  --chart-line: #38ff9c;
+  --chart-fill: rgba(56, 255, 156, 0.15);
+
+  --pixel-border: #6cffb4;
+
+  /* =========================
+     RADIUS
+  ========================== */
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+
+  /* =========================
+     SHADOWS
+  ========================== */
+
+  --shadow-soft: 0px 8px 30px rgba(0, 0, 0, 0.22);
+
+  --shadow-card: 0px 12px 40px rgba(0, 0, 0, 0.35);
+
+  --shadow-glow: 0px 0px 30px rgba(56, 255, 156, 0.18);
+
+  /* =========================
+     TYPOGRAPHY
+  ========================== */
+
+  --font-sans: 'Inter', 'SF Pro Display', 'Segoe UI', sans-serif;
+
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* =========================
+   BASE STYLES
+========================== */
+
+* {
+  border-color: var(--border);
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--background);
 }
 
 body {
-  background: var(--background);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(56, 255, 156, 0.12),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(26, 168, 93, 0.12),
+      transparent 25%
+    ),
+    linear-gradient(180deg, #040711 0%, #050816 40%, #08111f 100%);
+
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family: var(--font-sans);
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* =========================
+   SELECTION
+========================== */
+
+::selection {
+  background: rgba(56, 255, 156, 0.25);
+  color: white;
+}
+
+/* =========================
+   SCROLLBAR
+========================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #08111f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1ea85d, #38ff9c);
+
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #38ff9c, #72ffbf);
+}
+
+/* =========================
+   TYPOGRAPHY
+========================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =========================
+   UTILITIES
+========================== */
+
+@utility container-wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@utility glass-card {
+  background: var(--card);
+
+  backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  box-shadow:
+    var(--shadow-card),
+    inset 0px 1px 0px rgba(255, 255, 255, 0.05);
+
+  border-radius: var(--radius-lg);
+}
+
+@utility pitch-glow {
+  box-shadow:
+    0px 0px 0px 1px rgba(56, 255, 156, 0.12),
+    0px 0px 24px rgba(56, 255, 156, 0.15);
+}
+
+@utility neon-text {
+  color: var(--primary);
+
+  text-shadow:
+    0px 0px 8px rgba(56, 255, 156, 0.45),
+    0px 0px 18px rgba(56, 255, 156, 0.25);
+}
+
+@utility pixel-border {
+  border: 2px solid var(--pixel-border);
+
+  clip-path: polygon(
+    0px 8px,
+    8px 8px,
+    8px 0px,
+    calc(100% - 8px) 0px,
+    calc(100% - 8px) 8px,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) calc(100% - 8px),
+    calc(100% - 0px) 100%,
+    8px 100%,
+    8px calc(100% - 8px),
+    0px calc(100% - 8px)
+  );
+}
+
+@utility section-spacing {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+@utility grid-overlay {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+
+  background-size: 40px 40px;
+}
+
+/* =========================
+   BUTTON SYSTEM
+========================== */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  padding: 0.9rem 1.4rem;
+
+  border-radius: var(--radius-md);
+
+  background: linear-gradient(135deg, #1ea85d, #38ff9c);
+
+  color: #04110b;
+
+  font-weight: 700;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.25s ease;
+
+  box-shadow: 0px 10px 30px rgba(56, 255, 156, 0.22);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0px 14px 36px rgba(56, 255, 156, 0.28);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.9rem 1.4rem;
+
+  border-radius: var(--radius-md);
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  border-color: rgba(56, 255, 156, 0.2);
+
+  transform: translateY(-2px);
+}
+
+/* =========================
+   CARD SYSTEM
+========================== */
+
+.card-hover {
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-6px);
+
+  border-color: rgba(56, 255, 156, 0.22);
+
+  box-shadow:
+    0px 14px 40px rgba(0, 0, 0, 0.45),
+    0px 0px 30px rgba(56, 255, 156, 0.12);
+}
+
+/* =========================
+   GRADIENT TEXT
+========================== */
+
+.gradient-text {
+  background: linear-gradient(90deg, #ffffff, #72ffbf);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* =========================
+   BACKGROUND EFFECTS
+========================== */
+
+.stadium-noise {
+  position: relative;
+}
+
+.stadium-noise::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px
+  );
+
+  background-size: 3px 3px;
+
+  opacity: 0.35;
+
+  pointer-events: none;
+}
+
+/* =========================
+   ANIMATIONS
+========================== */
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease infinite;
+}
+
+/* =========================
+   CHART STYLES
+========================== */
+
+.chart-surface {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.01)
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  border-radius: var(--radius-lg);
+
+  overflow: hidden;
+}
+
+/* =========================
+   PITCH BACKGROUND
+========================== */
+
+.pitch-background {
+  background: repeating-linear-gradient(
+    90deg,
+    #0d5f33 0px,
+    #0d5f33 80px,
+    #12753f 80px,
+    #12753f 160px
+  );
+}
+
+/* =========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 1024px) {
+  .section-spacing {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-spacing {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .container-wrapper {
+    padding-inline: 1rem;
+  }
 }
