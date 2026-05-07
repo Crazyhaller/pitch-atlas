@@ -15,30 +15,51 @@ export async function fetchMatchDetails(
 
       competition: 'Premier League',
 
+      league: {
+        id: 2021,
+
+        name: 'Premier League',
+
+        country: 'England',
+      },
+
       utcDate: new Date().toISOString(),
 
       status: {
         short: 'LIVE',
+
         long: 'Live',
       },
 
       venue: {
         name: 'Signal Dome Arena',
+
         city: 'London',
       },
 
       homeTeam: {
         id: 1,
+
         name: 'Manchester City',
+
+        shortName: 'MCI',
+
+        crest: 'https://crests.football-data.org/65.png',
       },
 
       awayTeam: {
         id: 2,
+
         name: 'Arsenal',
+
+        shortName: 'ARS',
+
+        crest: 'https://crests.football-data.org/57.png',
       },
 
       score: {
         home: 2,
+
         away: 1,
       },
 
