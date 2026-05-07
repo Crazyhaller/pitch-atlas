@@ -16,8 +16,10 @@ export function useMatches() {
   )
 
   useEffect(() => {
-    dispatch(getMatches())
-  }, [dispatch])
+    if (matches.length === 0 && !loading) {
+      dispatch(getMatches())
+    }
+  }, [dispatch, matches.length, loading])
 
   return {
     matches,
