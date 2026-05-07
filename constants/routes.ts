@@ -7,7 +7,7 @@ export const APP_ROUTES = {
   DASHBOARD: '/dashboard',
   MATCHES: '/matches',
   EXPLORER: '/explorer',
-  FAVORITES: '/favorites',
+  FAVOURITES: '/favourites',
 } as const
 
 export const DYNAMIC_ROUTES = {
@@ -30,8 +30,8 @@ export const NAVIGATION_LINKS = [
     href: APP_ROUTES.EXPLORER,
   },
   {
-    label: 'Favorites',
-    href: APP_ROUTES.FAVORITES,
+    label: 'Favourites',
+    href: APP_ROUTES.FAVOURITES,
   },
 ] as const
 

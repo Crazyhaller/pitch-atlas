@@ -37,8 +37,8 @@ const appNavigation = [
     icon: faTrophy,
   },
   {
-    label: 'Favorites',
-    href: APP_ROUTES.FAVORITES,
+    label: 'Favourites',
+    href: APP_ROUTES.FAVOURITES,
     icon: faHeart,
   },
 ]

@@ -22,8 +22,8 @@ const footerLinks = [
     href: '/matches',
   },
   {
-    label: 'Favorites',
-    href: '/favorites',
+    label: 'Favourites',
+    href: '/favourites',
   },
 ]
 
