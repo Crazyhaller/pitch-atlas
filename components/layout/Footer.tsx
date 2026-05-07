@@ -83,11 +83,11 @@ export default function Footer() {
           {/* NAVIGATION */}
 
           <div>
-            <h4 className="mb-5 text-sm font-bold uppercase tracking-[0.18em] text-white">
+            <h4 className="mb-10 text-sm font-bold uppercase tracking-[0.18em] text-white">
               Navigation
             </h4>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 mt-5">
               {footerLinks.map((item) => (
                 <Link
                   key={item.href}
@@ -103,11 +103,11 @@ export default function Footer() {
           {/* SOCIALS */}
 
           <div>
-            <h4 className="mb-5 text-sm font-bold uppercase tracking-[0.18em] text-white">
+            <h4 className="mb-10 text-sm font-bold uppercase tracking-[0.18em] text-white">
               Connect
             </h4>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mt-5">
               {socialLinks.map((social, index) => (
                 <Link
                   key={index}
