@@ -1,0 +1,12 @@
+[
+  { "minute": 0, "stamina": 100 },
+  { "minute": 10, "stamina": 97 },
+  { "minute": 20, "stamina": 94 },
+  { "minute": 30, "stamina": 89 },
+  { "minute": 40, "stamina": 82 },
+  { "minute": 50, "stamina": 76 },
+  { "minute": 60, "stamina": 69 },
+  { "minute": 70, "stamina": 61 },
+  { "minute": 80, "stamina": 54 },
+  { "minute": 90, "stamina": 46 }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "minute": 4,
+    "type": "shot",
+    "player": "Phil Foden",
+    "team": "Manchester City",
+    "x": 18,
+    "y": 42,
+    "description": "Long-range effort outside the box"
+  },
+  {
+    "id": 2,
+    "minute": 11,
+    "type": "goal",
+    "player": "Erling Haaland",
+    "team": "Manchester City",
+    "x": 81,
+    "y": 49,
+    "description": "Clinical finish after counter attack"
+  },
+  {
+    "id": 3,
+    "minute": 24,
+    "type": "yellow-card",
+    "player": "Declan Rice",
+    "team": "Arsenal",
+    "x": 49,
+    "y": 57,
+    "description": "Late tactical foul in midfield"
+  },
+  {
+    "id": 4,
+    "minute": 37,
+    "type": "goal",
+    "player": "Bukayo Saka",
+    "team": "Arsenal",
+    "x": 77,
+    "y": 44,
+    "description": "Curled finish into the far corner"
+  },
+  {
+    "id": 5,
+    "minute": 58,
+    "type": "save",
+    "player": "Ederson",
+    "team": "Manchester City",
+    "x": 9,
+    "y": 50,
+    "description": "Reflex save from close range"
+  },
+  {
+    "id": 6,
+    "minute": 71,
+    "type": "goal",
+    "player": "Kevin De Bruyne",
+    "team": "Manchester City",
+    "x": 69,
+    "y": 39,
+    "description": "Powerful strike from edge of box"
+  },
+  {
+    "id": 7,
+    "minute": 86,
+    "type": "red-card",
+    "player": "Gabriel Jesus",
+    "team": "Arsenal",
+    "x": 41,
+    "y": 63,
+    "description": "Second yellow after dangerous tackle"
+  }
+]
