@@ -1,28 +1,46 @@
 export interface TeamReference {
   id: number
+
   name: string
+
   shortName?: string
+
   crest?: string
+}
+
+export interface MatchLeague {
+  id?: number
+
+  name: string
+
+  country?: string
+
+  logo?: string
 }
 
 export interface MatchScore {
   home: number
+
   away: number
 }
 
 export interface MatchStatus {
   short: string
+
   long: string
 }
 
 export interface MatchVenue {
   name: string
+
   city?: string
 }
 
 export interface MatchEvent {
   id: number
+
   minute: number
+
   type:
     | 'goal'
     | 'assist'
@@ -37,6 +55,7 @@ export interface MatchEvent {
   team: string
 
   x: number
+
   y: number
 
   description?: string
@@ -44,6 +63,7 @@ export interface MatchEvent {
 
 export interface MatchMomentumPoint {
   minute: number
+
   intensity: number
 }
 
@@ -51,6 +71,8 @@ export interface Match {
   id: number
 
   competition: string
+
+  league: MatchLeague
 
   utcDate: string
 

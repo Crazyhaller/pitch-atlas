@@ -1,36 +1,65 @@
-import { APP_CONFIG } from '@/constants/config'
-import { FootballDataMatchesResponse } from '@/types/api'
 import { Match } from '@/types/match'
 
-import { transformMatchData } from '../data/transformMatchData'
-
 export async function fetchMatches(): Promise<Match[]> {
-  try {
-    const response = await fetch(
-      `${APP_CONFIG.api.footballDataBaseUrl}/competitions/${APP_CONFIG.defaults.leagueCode}/matches`,
-      {
-        headers: {
-          'X-Auth-Token': process.env.NEXT_PUBLIC_FOOTBALL_DATA_API_KEY ?? '',
-        },
+  const response = await fetch('/api/matches')
 
-        next: {
-          revalidate: 300,
-        },
-      },
-    )
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch matches')
-    }
-
-    const data: FootballDataMatchesResponse = await response.json()
-
-    return transformMatchData(
-      data.matches.slice(0, APP_CONFIG.defaults.matchesLimit),
-    )
-  } catch (error) {
-    console.error(error)
-
-    return []
+  if (!response.ok) {
+    throw new Error('Failed to fetch matches')
   }
+
+  const data = await response.json()
+
+  return (
+    data.matches?.map((match: any) => ({
+      id: match.id,
+
+      competition: match.competition?.name ?? '',
+
+      league: {
+        id: match.competition?.id,
+
+        name: match.competition?.name ?? '',
+
+        country: match.area?.name ?? '',
+      },
+
+      utcDate: match.utcDate,
+
+      status: {
+        short: match.status,
+
+        long: match.status,
+      },
+
+      venue: {
+        name: match.venue ?? 'Unknown Venue',
+      },
+
+      homeTeam: {
+        id: match.homeTeam?.id,
+
+        name: match.homeTeam?.name,
+
+        shortName: match.homeTeam?.shortName,
+
+        crest: match.homeTeam?.crest,
+      },
+
+      awayTeam: {
+        id: match.awayTeam?.id,
+
+        name: match.awayTeam?.name,
+
+        shortName: match.awayTeam?.shortName,
+
+        crest: match.awayTeam?.crest,
+      },
+
+      score: {
+        home: match.score?.fullTime?.home ?? 0,
+
+        away: match.score?.fullTime?.away ?? 0,
+      },
+    })) ?? []
+  )
 }

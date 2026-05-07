@@ -1,5 +1,41 @@
+export interface TeamArea {
+  name: string
+}
+
+export interface TeamCoach {
+  id?: number
+
+  name: string
+
+  nationality?: string
+}
+
+export interface TeamPlayer {
+  id: number
+
+  name: string
+
+  position?: string
+
+  nationality?: string
+
+  age?: number
+}
+
+export interface TeamReference {
+  id: number
+
+  name: string
+
+  shortName?: string
+
+  crest?: string
+}
+
 export interface TeamStanding {
   position: number
+
+  team: TeamReference
 
   playedGames: number
 
@@ -16,7 +52,11 @@ export interface TeamStanding {
   goalDifference: number
 
   points: number
+
+  form?: string
 }
+
+export type Standing = TeamStanding
 
 export interface Team {
   id: number
@@ -31,7 +71,13 @@ export interface Team {
 
   venue?: string
 
-  coach?: string
+  clubColors?: string
+
+  area?: TeamArea
+
+  coach?: TeamCoach
+
+  squad?: TeamPlayer[]
 
   form?: string[]
 

@@ -1,31 +1,59 @@
 export interface PlayerStatistics {
   appearances: number
+
   goals: number
+
   assists: number
+
   passes: number
+
   shots: number
+
   tackles: number
+
   interceptions: number
+
   dribbles: number
+
   rating: number
+
+  distanceCovered?: number
+
+  sprintBursts?: number
+
+  stamina?: number
 }
 
 export interface SprintBurst {
   minute: number
+
   speed: number
+
   distance: number
 }
 
 export interface EnduranceDataPoint {
   minute: number
+
   stamina: number
 }
 
 export interface PlayerMovementPoint {
   x: number
+
   y: number
+
   intensity: number
+
   minute: number
+}
+
+export interface PlayerTeam {
+  id: number
+
+  name: string
+
+  crest?: string
 }
 
 export interface Player {
@@ -33,11 +61,15 @@ export interface Player {
 
   name: string
 
+  firstname?: string
+
+  lastname?: string
+
   age: number
 
   nationality: string
 
-  team: string
+  team: string | PlayerTeam
 
   position: string
 
@@ -46,6 +78,8 @@ export interface Player {
   height?: string
 
   weight?: string
+
+  injured?: boolean
 
   statistics: PlayerStatistics
 
