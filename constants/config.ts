@@ -13,7 +13,7 @@ export const APP_CONFIG = {
   },
 
   storage: {
-    favorites: 'pitchAtlas-favorites',
+    favourites: 'pitchAtlas-favourites',
     dashboard: 'pitchAtlas-dashboard',
     recentSearches: 'pitchAtlas-recent-searches',
   },
