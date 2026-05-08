@@ -1,26 +1,22 @@
 'use client'
 
-import { PropsWithChildren, useEffect } from 'react'
+import { PropsWithChildren } from 'react'
+
 import { Provider } from 'react-redux'
+
 import { AnimatePresence } from 'motion/react'
+
+import { usePathname } from 'next/navigation'
+
 import { store } from '@/store'
 
 export default function Providers({ children }: PropsWithChildren) {
-  useEffect(() => {
-    const root = document.documentElement
-
-    root.style.setProperty(
-      '--font-sans',
-      `"Inter", "SF Pro Display", sans-serif`,
-    )
-
-    root.style.setProperty('--font-mono', `"JetBrains Mono", monospace`)
-  }, [])
+  const pathname = usePathname()
 
   return (
     <Provider store={store}>
       <AnimatePresence mode="wait" initial={false}>
-        {children}
+        <div key={pathname}>{children}</div>
       </AnimatePresence>
     </Provider>
   )

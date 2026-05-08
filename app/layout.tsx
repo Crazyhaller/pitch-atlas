@@ -1,18 +1,26 @@
 import type { Metadata, Viewport } from 'next'
+
 import { Inter, JetBrains_Mono } from 'next/font/google'
+
 import './globals.css'
+
 import Providers from './providers'
+
 import { TooltipProvider } from '@/components/ui/tooltip'
 
 const inter = Inter({
   subsets: ['latin'],
+
   variable: '--font-inter',
+
   display: 'swap',
 })
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
+
   variable: '--font-jetbrains',
+
   display: 'swap',
 })
 
@@ -21,23 +29,45 @@ export const metadata: Metadata = {
 
   title: {
     default: 'PitchAtlas',
+
     template: '%s | PitchAtlas',
   },
 
   description:
-    'PitchAtlas transforms football analytics into cinematic terrain exploration with immersive heatmaps, elevation timelines, and interactive match journeys.',
+    'PitchAtlas transforms football analytics into cinematic terrain exploration with immersive heatmaps, elevation timelines, traversal intelligence, and interactive match journeys.',
+
+  applicationName: 'PitchAtlas',
+
+  category: 'Sports Analytics',
 
   keywords: [
     'football analytics',
+
     'soccer analytics',
+
     'sports dashboard',
+
     'football heatmap',
+
     'match explorer',
+
     'football SaaS',
+
     'sports visualization',
+
     'football statistics',
+
     'nextjs football app',
+
     'interactive football analytics',
+
+    'terrain analytics',
+
+    'football terrain',
+
+    'match traversal',
+
+    'football intelligence',
   ],
 
   authors: [
@@ -48,13 +78,19 @@ export const metadata: Metadata = {
 
   creator: 'PitchAtlas',
 
+  publisher: 'PitchAtlas',
+
+  alternates: {
+    canonical: 'https://pitchAtlas.vercel.app',
+  },
+
   openGraph: {
     type: 'website',
 
     title: 'PitchAtlas',
 
     description:
-      'Explore football matches as cinematic journeys through immersive analytics and terrain-inspired visualizations.',
+      'Explore football matches as cinematic journeys through immersive terrain intelligence and interactive spatial analytics.',
 
     url: 'https://pitchAtlas.vercel.app',
 
@@ -63,8 +99,11 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/images/ui/og-image.png',
+
         width: 1200,
+
         height: 630,
+
         alt: 'PitchAtlas Open Graph Preview',
       },
     ],
@@ -83,18 +122,22 @@ export const metadata: Metadata = {
 
   robots: {
     index: true,
+
     follow: true,
   },
 
   icons: {
     icon: '/icons/favicon.ico',
+
     shortcut: '/icons/favicon.ico',
+
     apple: '/icons/apple-touch-icon.png',
   },
 }
 
 export const viewport: Viewport = {
   themeColor: '#050816',
+
   colorScheme: 'dark',
 }
 
@@ -109,7 +152,10 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
       suppressHydrationWarning
       className={`${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="antialiased">
+      <body
+        suppressHydrationWarning
+        className="min-h-screen bg-[#02060d] font-sans antialiased text-white selection:bg-emerald-400/30 selection:text-white"
+      >
         <Providers>
           <TooltipProvider>{children}</TooltipProvider>
         </Providers>
