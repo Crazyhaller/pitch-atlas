@@ -2,9 +2,7 @@
 
 import { useEffect } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux'
-
-import type { AppDispatch, RootState } from '@/store'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 
 import {
   addFavourite,
@@ -16,9 +14,9 @@ import {
 import { APP_CONFIG } from '@/constants/config'
 
 export function useFavourites() {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
 
-  const favourites = useSelector((state: RootState) => state.favourites.items)
+  const favourites = useAppSelector((state) => state.favourites.items)
 
   useEffect(() => {
     try {
@@ -27,8 +25,8 @@ export function useFavourites() {
       if (stored) {
         dispatch(hydrateFavourites(JSON.parse(stored)))
       }
-    } catch (error) {
-      console.error(error)
+    } catch {
+      dispatch(hydrateFavourites([]))
     }
   }, [dispatch])
 

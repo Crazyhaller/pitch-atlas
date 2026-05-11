@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 import { motion } from 'motion/react'
 
 import { TeamStanding } from '@/types/team'
@@ -14,16 +16,18 @@ export default function LeagueTable({
   leagueName = 'League Standings',
 }: LeagueTableProps) {
   return (
-    <div className="relative overflow-hidden rounded-4xl border border-white/8 bg-[#08111f]/75 backdrop-blur-2xl">
+    <div className="premium-panel relative min-w-0 overflow-hidden rounded-[26px]">
       {/* GLOW */}
 
       <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-emerald-400/10 blur-[100px]" />
 
       {/* HEADER */}
 
-      <div className="relative z-10 flex items-center justify-between border-b border-white/6 px-7 py-6">
-        <div>
-          <h2 className="text-3xl font-black text-white">{leagueName}</h2>
+      <div className="relative z-10 flex flex-col gap-4 border-b border-white/6 px-5 py-5 sm:px-7 sm:py-6 md:flex-row md:items-center md:justify-between">
+        <div className="min-w-0">
+          <h2 className="text-2xl font-black text-white sm:text-3xl">
+            {leagueName}
+          </h2>
 
           <p className="mt-2 text-sm text-white/45">
             Terrain-driven competition overview
@@ -37,8 +41,8 @@ export default function LeagueTable({
 
       {/* TABLE */}
 
-      <div className="relative z-10 overflow-x-auto">
-        <table className="w-full min-w-205">
+      <div className="x-scroll relative z-10">
+        <table className="w-full min-w-[720px]">
           <thead>
             <tr className="border-b border-white/6">
               {[
@@ -97,7 +101,10 @@ export default function LeagueTable({
                 {/* TEAM */}
 
                 <td className="px-6 py-5">
-                  <div className="flex items-center gap-4">
+                  <Link
+                    href={`/team/${standing.team.id}`}
+                    className="group/team flex items-center gap-4 rounded-2xl transition-colors hover:text-[#38FF9C]"
+                  >
                     <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-white/8 bg-[#0b1524]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -108,15 +115,15 @@ export default function LeagueTable({
                     </div>
 
                     <div>
-                      <h3 className="font-bold text-white">
+                      <h3 className="font-bold text-white transition-colors group-hover/team:text-[#38FF9C]">
                         {standing.team.shortName}
                       </h3>
 
                       <p className="mt-1 text-xs uppercase tracking-[0.12em] text-white/35">
-                        Terrain Club
+                        Open club terrain
                       </p>
                     </div>
-                  </div>
+                  </Link>
                 </td>
 
                 {/* STATS */}

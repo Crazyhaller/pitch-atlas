@@ -4,15 +4,20 @@ import { useMemo } from 'react'
 
 import movementData from '@/mock/playerMovement.json'
 
+import { generateHeatmapData } from '@/lib/data/generateHeatmapData'
 import { calculateIntensityZones } from '@/lib/visualization/calculateIntensityZones'
 
 export function useHeatmapData() {
-  const zones = useMemo(() => {
-    return calculateIntensityZones(movementData)
+  const points = useMemo(() => {
+    return [...movementData, ...generateHeatmapData(36)]
   }, [])
 
+  const zones = useMemo(() => {
+    return calculateIntensityZones(points)
+  }, [points])
+
   return {
-    points: movementData,
+    points,
     zones,
   }
 }

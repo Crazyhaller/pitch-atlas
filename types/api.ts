@@ -8,6 +8,15 @@ export interface FootballDataTeam {
 export interface FootballDataMatch {
   id: number
 
+  competition?: {
+    id?: number
+    name?: string
+  }
+
+  area?: {
+    name?: string
+  }
+
   utcDate: string
 
   status: string

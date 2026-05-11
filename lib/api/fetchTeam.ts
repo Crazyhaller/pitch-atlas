@@ -1,39 +1,43 @@
 import { Team } from '@/types/team'
 
+import { sampleStandings, sampleTeams } from '@/lib/data/sampleFootball'
+
 export async function fetchTeam(teamId: number | string): Promise<Team | null> {
   try {
+    const id = Number(teamId)
+    const sampleTeam = sampleTeams.find((team) => team.id === id) ?? sampleTeams[0]
+    const standing = sampleStandings.find((item) => item.team.id === sampleTeam.id)
+
     return {
-      id: Number(teamId),
+      ...sampleTeam,
 
-      name: 'Manchester City',
+      standings: standing,
 
-      shortName: 'MCI',
-
-      crest: 'https://crests.football-data.org/65.png',
-
-      founded: 1880,
-
-      venue: 'Etihad Stadium',
-
-      coach: 'Pep Guardiola',
-
-      form: ['W', 'W', 'D', 'W', 'L'],
-
-      standings: {
-        position: 1,
-        playedGames: 34,
-        won: 25,
-        draw: 5,
-        lost: 4,
-        goalsFor: 79,
-        goalsAgainst: 31,
-        goalDifference: 48,
-        points: 80,
-      },
+      squad: [
+        {
+          id: 1,
+          name: 'Marcus Rashford',
+          position: 'Winger',
+          nationality: 'England',
+          age: 28,
+        },
+        {
+          id: 2,
+          name: 'Kevin De Bruyne',
+          position: 'Midfielder',
+          nationality: 'Belgium',
+          age: 34,
+        },
+        {
+          id: 3,
+          name: 'Bukayo Saka',
+          position: 'Forward',
+          nationality: 'England',
+          age: 24,
+        },
+      ],
     }
-  } catch (error) {
-    console.error(error)
-
+  } catch {
     return null
   }
 }

@@ -7,8 +7,13 @@ import DashboardLayout from '@/components/layout/DashboardLayout'
 import LoadingSpinner from '@/components/shared/LoadingSpinner'
 import ErrorState from '@/components/shared/ErrorState'
 import FavoriteButton from '@/components/shared/FavoriteButton'
+import DistanceMeter from '@/components/player/DistanceMeter'
+import EnduranceGraph from '@/components/player/EnduranceGraph'
+import FatigueIndicator from '@/components/player/FatigueIndicator'
+import SprintBarChart from '@/components/player/SprintBarChart'
 
 import { usePlayer } from '@/hooks/usePlayer'
+import { normalizePlayerStats } from '@/lib/data/normalizePlayerStats'
 
 interface PlayerPageProps {
   params: Promise<{
@@ -20,6 +25,7 @@ export default function PlayerPage({ params }: PlayerPageProps) {
   const { id } = use(params)
 
   const { player, loading, error } = usePlayer(id)
+  const normalizedStats = player ? normalizePlayerStats(player.statistics) : null
 
   return (
     <DashboardLayout>
@@ -42,7 +48,7 @@ export default function PlayerPage({ params }: PlayerPageProps) {
         <>
           {/* HERO */}
 
-          <section className="relative overflow-hidden rounded-[36px] border border-white/8 bg-[#08111f]/75 p-8 shadow-[0_0_100px_rgba(56,255,156,0.08)] backdrop-blur-2xl md:p-10">
+          <section className="premium-panel relative overflow-hidden rounded-[28px] p-6 sm:p-8 md:p-10">
             {/* GLOW */}
 
             <div className="absolute left-[10%] top-0 h-48 w-48 rounded-full bg-emerald-400/10 blur-[100px]" />
@@ -54,16 +60,16 @@ export default function PlayerPage({ params }: PlayerPageProps) {
             <div className="absolute inset-0 grid-overlay opacity-[0.04]" />
 
             <div className="relative z-10">
-              <div className="flex flex-col gap-10 xl:flex-row xl:items-center xl:justify-between">
+              <div className="flex min-w-0 flex-col gap-8 xl:flex-row xl:items-center xl:justify-between">
                 {/* LEFT */}
 
-                <div className="flex flex-col gap-8 md:flex-row md:items-center">
+                <div className="flex min-w-0 flex-col gap-6 md:flex-row md:items-center md:gap-8">
                   {/* PHOTO */}
 
                   <div className="relative">
                     <div className="absolute inset-0 rounded-[36px] bg-emerald-400/20 blur-3xl" />
 
-                    <div className="relative flex h-44 w-44 items-center justify-center overflow-hidden rounded-[36px] border border-white/8 bg-[#0b1524]">
+                    <div className="relative flex h-36 w-36 items-center justify-center overflow-hidden rounded-[28px] border border-white/8 bg-[#0b1524] sm:h-44 sm:w-44 sm:rounded-[36px]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={player.photo}
@@ -75,7 +81,7 @@ export default function PlayerPage({ params }: PlayerPageProps) {
 
                   {/* INFO */}
 
-                  <div>
+                  <div className="min-w-0">
                     {/* BADGE */}
 
                     <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-emerald-400/15 bg-emerald-400/10 px-5 py-2">
@@ -121,7 +127,7 @@ export default function PlayerPage({ params }: PlayerPageProps) {
 
                 {/* RIGHT */}
 
-                <div className="flex flex-col items-start gap-6 xl:items-end">
+                <div className="flex shrink-0 flex-col items-start gap-6 xl:items-end">
                   <FavoriteButton
                     entity={{
                       id: player.id,
@@ -131,7 +137,7 @@ export default function PlayerPage({ params }: PlayerPageProps) {
                     size="lg"
                   />
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid w-full grid-cols-2 gap-3 sm:gap-4 xl:w-auto">
                     {[
                       {
                         label: 'Terrain',
@@ -155,9 +161,9 @@ export default function PlayerPage({ params }: PlayerPageProps) {
                     ].map((item) => (
                       <div
                         key={item.label}
-                        className="rounded-3xl border border-white/6 bg-white/3 p-5"
+                        className="rounded-[22px] border border-white/6 bg-white/[0.03] p-4 sm:p-5"
                       >
-                        <h3 className="text-3xl font-black text-white">
+                        <h3 className="text-2xl font-black text-white sm:text-3xl">
                           {item.value}
                         </h3>
 
@@ -174,13 +180,13 @@ export default function PlayerPage({ params }: PlayerPageProps) {
 
           {/* STATS */}
 
-          <section className="mt-8 grid gap-8 xl:grid-cols-[1fr_420px]">
+          <section className="mt-6 grid min-w-0 gap-6 sm:mt-8 sm:gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(320px,420px)]">
             {/* LEFT */}
 
-            <div className="space-y-8">
+            <div className="min-w-0 space-y-6 sm:space-y-8">
               {/* PERFORMANCE */}
 
-              <div className="rounded-4xl border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
+              <div className="premium-panel rounded-[26px] p-5 sm:p-7">
                 <div className="mb-8">
                   <h2 className="text-3xl font-black text-white">
                     Terrain Performance
@@ -191,43 +197,43 @@ export default function PlayerPage({ params }: PlayerPageProps) {
                   </p>
                 </div>
 
-                <div className="grid gap-5 md:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-2">
                   {[
                     {
                       label: 'Goals',
-                      value: player.statistics.goals,
+                      value: normalizedStats?.goals,
                     },
 
                     {
                       label: 'Assists',
-                      value: player.statistics.assists,
+                      value: normalizedStats?.assists,
                     },
 
                     {
                       label: 'Passes',
-                      value: player.statistics.passes,
+                      value: normalizedStats?.passes,
                     },
 
                     {
                       label: 'Shots',
-                      value: player.statistics.shots,
+                      value: normalizedStats?.shots,
                     },
 
                     {
                       label: 'Dribbles',
-                      value: player.statistics.dribbles,
+                      value: normalizedStats?.dribbles,
                     },
 
                     {
                       label: 'Rating',
-                      value: player.statistics.rating,
+                      value: normalizedStats?.rating,
                     },
                   ].map((item) => (
                     <div
                       key={item.label}
-                      className="rounded-3xl border border-white/6 bg-white/3 p-6"
+                      className="rounded-[22px] border border-white/6 bg-white/[0.03] p-5 sm:p-6"
                     >
-                      <h3 className="text-4xl font-black text-white">
+                      <h3 className="text-3xl font-black text-white sm:text-4xl">
                         {item.value}
                       </h3>
 
@@ -241,7 +247,7 @@ export default function PlayerPage({ params }: PlayerPageProps) {
 
               {/* ENDURANCE */}
 
-              <div className="rounded-4xl border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
+              <div className="premium-panel rounded-[26px] p-5 sm:p-7">
                 <div className="mb-8">
                   <h2 className="text-3xl font-black text-white">
                     Endurance Terrain
@@ -252,43 +258,20 @@ export default function PlayerPage({ params }: PlayerPageProps) {
                   </p>
                 </div>
 
-                {/* CHART */}
-
-                <div className="relative h-80 overflow-hidden rounded-[28px] border border-white/6 bg-[#06101b]">
-                  {/* GRID */}
-
-                  <div className="absolute inset-0 grid-overlay opacity-[0.06]" />
-
-                  {/* SVG */}
-
-                  <svg
-                    viewBox="0 0 1000 320"
-                    preserveAspectRatio="none"
-                    className="absolute inset-0 h-full w-full"
-                  >
-                    <path
-                      d="M0 40 C160 60, 240 100, 360 120 S520 170, 680 190 S840 250, 1000 280"
-                      fill="none"
-                      stroke="#38FF9C"
-                      strokeWidth="5"
-                      strokeLinecap="round"
-                    />
-
-                    <path
-                      d="M0 40 C160 60, 240 100, 360 120 S520 170, 680 190 S840 250, 1000 280 L1000 320 L0 320 Z"
-                      fill="rgba(56,255,156,0.12)"
-                    />
-                  </svg>
-                </div>
+                <EnduranceGraph data={player.endurance} />
               </div>
             </div>
 
             {/* RIGHT */}
 
-            <div className="space-y-8">
+            <div className="min-w-0 space-y-6 sm:space-y-8">
+              <DistanceMeter movement={player.movement} />
+
+              <FatigueIndicator endurance={player.endurance} />
+
               {/* PROFILE */}
 
-              <div className="rounded-4xl border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
+              <div className="premium-panel rounded-[26px] p-5 sm:p-7">
                 <div className="mb-8">
                   <h2 className="text-3xl font-black text-white">
                     Athlete Profile
@@ -323,13 +306,13 @@ export default function PlayerPage({ params }: PlayerPageProps) {
                   ].map((item) => (
                     <div
                       key={item.label}
-                      className="flex items-center justify-between rounded-3xl border border-white/6 bg-white/3 p-5"
+                      className="flex items-center justify-between gap-4 rounded-[22px] border border-white/6 bg-white/[0.03] p-4 sm:p-5"
                     >
                       <p className="text-sm uppercase tracking-[0.14em] text-white/40">
                         {item.label}
                       </p>
 
-                      <h4 className="text-lg font-black text-white">
+                      <h4 className="text-right text-base font-black text-white sm:text-lg">
                         {item.value}
                       </h4>
                     </div>
@@ -339,7 +322,7 @@ export default function PlayerPage({ params }: PlayerPageProps) {
 
               {/* SPRINT BURSTS */}
 
-              <div className="rounded-4xl border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
+              <div className="premium-panel rounded-[26px] p-5 sm:p-7">
                 <div className="mb-8">
                   <h2 className="text-3xl font-black text-white">
                     Sprint Bursts
@@ -350,11 +333,13 @@ export default function PlayerPage({ params }: PlayerPageProps) {
                   </p>
                 </div>
 
-                <div className="space-y-4">
+                <SprintBarChart sprints={player.sprintBursts} />
+
+                <div className="mt-5 space-y-4">
                   {player.sprintBursts.slice(0, 5).map((sprint) => (
                     <div
                       key={sprint.minute}
-                      className="rounded-3xl border border-white/6 bg-white/3 p-5"
+                      className="rounded-[22px] border border-white/6 bg-white/[0.03] p-4 sm:p-5"
                     >
                       <div className="flex items-center justify-between">
                         <h3 className="font-bold text-white">

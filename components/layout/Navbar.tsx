@@ -63,6 +63,21 @@ export default function Navbar() {
   }, [])
 
   const isLandingPage = pathname === '/'
+  const isAppRouteActive = (href: string) => {
+    if (href === APP_ROUTES.DASHBOARD) {
+      return (
+        pathname === href ||
+        pathname.startsWith('/player') ||
+        pathname.startsWith('/team')
+      )
+    }
+
+    if (href === APP_ROUTES.MATCHES) {
+      return pathname === href || pathname.startsWith('/match')
+    }
+
+    return pathname === href
+  }
 
   return (
     <header
@@ -121,7 +136,7 @@ export default function Navbar() {
                   </Link>
                 ))
               : appNavigation.map((item) => {
-                  const active = pathname === item.href
+                  const active = isAppRouteActive(item.href)
 
                   return (
                     <Link
@@ -201,7 +216,11 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 rounded-2xl border border-white/6 bg-white/[0.03] px-5 py-4 text-sm font-semibold text-white/80 transition-all duration-300 hover:border-emerald-400/20 hover:bg-emerald-400/10 hover:text-white"
+                className={`flex items-center gap-3 rounded-2xl border px-5 py-4 text-sm font-semibold transition-all duration-300 hover:border-emerald-400/20 hover:bg-emerald-400/10 hover:text-white ${
+                  'icon' in item && isAppRouteActive(item.href)
+                    ? 'border-emerald-400/20 bg-emerald-400/10 text-[#38FF9C]'
+                    : 'border-white/6 bg-white/[0.03] text-white/80'
+                }`}
               >
                 {'icon' in item && (
                   <FontAwesomeIcon

@@ -5,7 +5,13 @@ export function transformMatchData(matches: FootballDataMatch[]): Match[] {
   return matches.map((match) => ({
     id: match.id,
 
-    competition: 'Premier League',
+    competition: match.competition?.name ?? 'Premier League',
+
+    league: {
+      id: match.competition?.id,
+      name: match.competition?.name ?? 'Premier League',
+      country: match.area?.name ?? 'England',
+    },
 
     utcDate: match.utcDate,
 

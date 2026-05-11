@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface TeamState {
   selectedTeamId: number | null
@@ -14,7 +14,7 @@ const teamSlice = createSlice({
   initialState,
 
   reducers: {
-    setSelectedTeam(state, action) {
+    setSelectedTeam(state, action: PayloadAction<number | null>) {
       state.selectedTeamId = action.payload
     },
   },

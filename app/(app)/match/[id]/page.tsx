@@ -43,7 +43,7 @@ export default function MatchDetailsPage({ params }: MatchDetailsPageProps) {
         <>
           {/* HERO */}
 
-          <section className="relative overflow-hidden rounded-[36px] border border-white/8 bg-[#08111f]/75 p-8 shadow-[0_0_100px_rgba(56,255,156,0.08)] backdrop-blur-2xl md:p-10">
+          <section className="premium-panel relative overflow-hidden rounded-[28px] p-6 sm:p-8 md:p-10">
             {/* GLOW */}
 
             <div className="absolute left-[10%] top-0 h-48 w-48 rounded-full bg-emerald-400/10 blur-[100px]" />
@@ -89,7 +89,7 @@ export default function MatchDetailsPage({ params }: MatchDetailsPageProps) {
 
               {/* META */}
 
-              <div className="mt-12 grid gap-5 md:grid-cols-4">
+              <div className="mt-10 grid gap-4 sm:mt-12 md:grid-cols-2 xl:grid-cols-4">
                 {[
                   {
                     label: 'Competition',
@@ -113,9 +113,9 @@ export default function MatchDetailsPage({ params }: MatchDetailsPageProps) {
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-3xl border border-white/6 bg-white/3 p-6"
+                    className="rounded-[22px] border border-white/6 bg-white/[0.03] p-5 sm:p-6"
                   >
-                    <h3 className="text-3xl font-black text-white">
+                    <h3 className="text-2xl font-black text-white sm:text-3xl">
                       {item.value}
                     </h3>
 
@@ -130,16 +130,16 @@ export default function MatchDetailsPage({ params }: MatchDetailsPageProps) {
 
           {/* MATCH OVERVIEW */}
 
-          <section className="mt-8">
+          <section className="mt-6 min-w-0 sm:mt-8">
             <MatchCard match={match} />
           </section>
 
           {/* MOMENTUM */}
 
-          <section className="mt-8 grid gap-8 xl:grid-cols-2">
+          <section className="mt-6 grid min-w-0 gap-6 sm:mt-8 sm:gap-8 xl:grid-cols-2">
             {/* TERRAIN */}
 
-            <div className="relative overflow-hidden rounded-4xl border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
+            <div className="premium-panel relative min-w-0 overflow-hidden rounded-[26px] p-5 sm:p-7">
               <div className="mb-6">
                 <h2 className="text-3xl font-black text-white">
                   Terrain Momentum
@@ -152,7 +152,7 @@ export default function MatchDetailsPage({ params }: MatchDetailsPageProps) {
 
               {/* CHART */}
 
-              <div className="relative h-80 overflow-hidden rounded-[28px] border border-white/6 bg-[#06101b]">
+              <div className="relative h-72 overflow-hidden rounded-[24px] border border-white/6 bg-[#06101b] sm:h-80">
                 {/* GRID */}
 
                 <div className="absolute inset-0 grid-overlay opacity-[0.06]" />
@@ -182,7 +182,7 @@ export default function MatchDetailsPage({ params }: MatchDetailsPageProps) {
 
             {/* MATCH EVENTS */}
 
-            <div className="relative overflow-hidden rounded-4xl border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
+            <div className="premium-panel relative min-w-0 overflow-hidden rounded-[26px] p-5 sm:p-7">
               <div className="mb-6">
                 <h2 className="text-3xl font-black text-white">
                   Tactical Events
@@ -199,7 +199,7 @@ export default function MatchDetailsPage({ params }: MatchDetailsPageProps) {
                 {match.events?.slice(0, 5).map((event) => (
                   <div
                     key={event.id}
-                    className="flex items-center gap-5 rounded-3xl border border-white/6 bg-white/3 p-5"
+                    className="flex items-center gap-4 rounded-[22px] border border-white/6 bg-white/[0.03] p-4 sm:gap-5 sm:p-5"
                   >
                     {/* MINUTE */}
 

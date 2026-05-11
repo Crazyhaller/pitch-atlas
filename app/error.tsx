@@ -11,15 +11,10 @@ interface GlobalErrorPageProps {
 }
 
 export default function GlobalErrorPage({
-  error,
   reset,
 }: GlobalErrorPageProps) {
-  console.error(error)
-
   return (
-    <html lang="en">
-      <body className="bg-[#02060d] text-white">
-        <main className="relative flex min-h-screen overflow-hidden">
+    <main className="relative flex min-h-screen overflow-hidden bg-[#02060d] text-white">
           {/* BACKGROUND */}
 
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,255,156,0.12),transparent_45%)]" />
@@ -140,8 +135,6 @@ export default function GlobalErrorPage({
               </div>
             </div>
           </div>
-        </main>
-      </body>
-    </html>
+    </main>
   )
 }

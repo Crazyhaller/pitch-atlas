@@ -21,9 +21,7 @@ export function usePlayer(playerId: number | string) {
         const data = await fetchPlayer(playerId)
 
         setPlayer(data)
-      } catch (err) {
-        console.error(err)
-
+      } catch {
         setError('Failed to fetch player')
       } finally {
         setLoading(false)

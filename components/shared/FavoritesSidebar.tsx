@@ -29,11 +29,11 @@ export default function FavouritesSidebar() {
   }
 
   return (
-    <div className="rounded-4xl border border-white/8 bg-[#08111f]/75 p-6 backdrop-blur-2xl">
+    <div className="premium-panel rounded-[26px] p-5 sm:p-6">
       {/* HEADER */}
 
       <div className="mb-6 flex items-center justify-between">
-        <div>
+        <div className="min-w-0">
           <h3 className="text-2xl font-black text-white">Favourites Hub</h3>
 
           <p className="mt-1 text-sm text-white/45">
@@ -70,7 +70,7 @@ export default function FavouritesSidebar() {
                   ? `/player/${favourite.id}`
                   : `/team/${favourite.id}`
               }
-              className="group flex items-center gap-5 rounded-3xl border border-white/6 bg-white/3 p-5 transition-all duration-300 hover:border-emerald-400/15 hover:bg-emerald-400/8"
+              className="group flex items-center gap-4 rounded-[22px] border border-white/6 bg-white/[0.03] p-4 transition-all duration-300 hover:border-emerald-400/15 hover:bg-emerald-400/8 sm:gap-5 sm:p-5"
             >
               {/* ICON */}
 
@@ -83,8 +83,8 @@ export default function FavouritesSidebar() {
 
               {/* CONTENT */}
 
-              <div className="flex-1">
-                <h4 className="font-bold text-white transition-colors duration-300 group-hover:text-[#38FF9C]">
+              <div className="min-w-0 flex-1">
+                <h4 className="truncate font-bold text-white transition-colors duration-300 group-hover:text-[#38FF9C]">
                   {favourite.name}
                 </h4>
 
@@ -95,7 +95,7 @@ export default function FavouritesSidebar() {
 
               {/* STATUS */}
 
-              <div className="rounded-full border border-emerald-400/15 bg-emerald-400/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#38FF9C]">
+              <div className="hidden rounded-full border border-emerald-400/15 bg-emerald-400/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#38FF9C] sm:block">
                 Saved
               </div>
             </Link>

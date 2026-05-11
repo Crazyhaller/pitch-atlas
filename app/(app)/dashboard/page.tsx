@@ -1,158 +1,224 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
-
-import { motion } from 'motion/react'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import {
   faChartLine,
   faCompass,
-  faEye,
   faFire,
-  faLayerGroup,
+  faRoute,
+  faShieldHalved,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const dashboardModules = [
-  {
-    id: 'heatmap',
-    title: 'Terrain Heatmaps',
-    icon: faFire,
-  },
+import DashboardLayout from '@/components/layout/DashboardLayout'
+import LeagueTable from '@/components/dashboard/LeagueTable'
+import RecentMatchesList from '@/components/dashboard/RecentMatchesList'
+import StatsCard from '@/components/dashboard/StatsCard'
+import TopPlayersCarousel from '@/components/dashboard/TopPlayersCarousel'
+import SearchBar from '@/components/shared/SearchBar'
+import LoadingSpinner from '@/components/shared/LoadingSpinner'
+import ErrorState from '@/components/shared/ErrorState'
+import ElevationChart from '@/components/charts/ElevationChart'
+import GraphTooltip from '@/components/charts/GraphTooltip'
+import PitchCanvas from '@/components/heatmap/PitchCanvas'
+import HeatmapControls from '@/components/heatmap/HeatmapControls'
+import IntensityLegend from '@/components/heatmap/IntensityLegend'
+import PlayerSelector from '@/components/heatmap/PlayerSelector'
 
-  {
-    id: 'momentum',
-    title: 'Momentum Elevation',
-    icon: faChartLine,
-  },
+import { useHeatmapData } from '@/hooks/useHeatmapData'
+import { useMatches } from '@/hooks/useMatches'
+import { useMomentumData } from '@/hooks/useMomentumData'
+import { samplePlayers, sampleStandings } from '@/lib/data/sampleFootball'
+import { formatNumber } from '@/lib/utils/formatNumber'
 
-  {
-    id: 'explorer',
-    title: 'Match Explorer',
-    icon: faCompass,
-  },
+export default function DashboardPage() {
+  const { matches, loading, error } = useMatches()
+  const momentum = useMomentumData()
+  const { zones } = useHeatmapData()
+  const [selectedPlayer, setSelectedPlayer] = useState('Marcus Rashford')
+  const [intensityFloor, setIntensityFloor] = useState(25)
+  const [showPaths, setShowPaths] = useState(true)
+  const [dashboardMatchLimit, setDashboardMatchLimit] = useState(3)
+  const [heatmapMode, setHeatmapMode] = useState<'density' | 'traversal'>(
+    'density',
+  )
 
-  {
-    id: 'spatial',
-    title: 'Spatial Layers',
-    icon: faLayerGroup,
-  },
-]
-
-export default function UserDashboardConfig() {
-  const [enabledModules, setEnabledModules] = useState<string[]>([
-    'heatmap',
-    'momentum',
-    'explorer',
-  ])
-
-  function toggleModule(moduleId: string) {
-    setEnabledModules((previous) => {
-      const exists = previous.includes(moduleId)
-
-      if (exists) {
-        return previous.filter((item) => item !== moduleId)
-      }
-
-      return [...previous, moduleId]
-    })
-  }
+  const visibleMatches = matches.length > 0 ? matches : []
+  const liveStatuses = new Set(['LIVE', 'IN_PLAY', 'PAUSED', 'HT'])
+  const activeMatches = visibleMatches.filter((match) =>
+    liveStatuses.has(match.status.short),
+  )
+  const dashboardMatches = visibleMatches.slice(0, dashboardMatchLimit)
+  const peakMomentum = Math.max(...momentum.map((point) => point.intensity))
 
   return (
-    <div className="relative overflow-hidden rounded-4xl border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
-      {/* GLOW */}
+    <DashboardLayout>
+      <section className="premium-panel relative overflow-visible rounded-[28px] p-6 sm:p-8 md:p-10 z-20">
+        <div className="absolute inset-0 grid-overlay opacity-[0.04]" />
+        <div className="absolute right-[8%] top-0 h-56 w-56 rounded-full bg-emerald-400/10 blur-[120px]" />
 
-      <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-emerald-400/10 blur-[100px]" />
+        <div className="relative z-10 grid min-w-0 gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(320px,420px)] xl:items-end">
+          <div className="min-w-0">
+            <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-emerald-400/15 bg-emerald-400/10 px-5 py-2">
+              <span className="h-2 w-2 rounded-full bg-[#38FF9C]" />
+              <span className="text-xs font-bold uppercase tracking-[0.22em] text-[#9FFFCF]">
+                Live Football Terrain Command
+              </span>
+            </div>
 
-      {/* HEADER */}
+            <h1 className="max-w-4xl text-4xl font-black leading-[0.95] tracking-[-0.06em] text-white md:text-6xl">
+              Tactical Intelligence
+              <span className="gradient-text block">Dashboard</span>
+            </h1>
 
-      <div className="relative z-10 mb-8 flex items-center justify-between">
-        <div>
-          <h3 className="text-2xl font-black text-white">Dashboard Modules</h3>
+            <p className="mt-7 max-w-3xl text-lg leading-9 text-white/62">
+              Monitor league tables, live match terrain, player traversal,
+              momentum elevation, and heat intensity from one cinematic football
+              analytics workspace.
+            </p>
 
-          <p className="mt-1 text-sm text-white/45">
-            Customize your terrain analytics experience
-          </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/player/1" className="btn-primary justify-center">
+                <FontAwesomeIcon icon={faUser} className="h-4 w-4" />
+                Open Player Profile
+              </Link>
+              <Link href="/explorer" className="btn-secondary justify-center">
+                <FontAwesomeIcon
+                  icon={faCompass}
+                  className="h-4 w-4 text-[#38FF9C]"
+                />
+                Launch Explorer
+              </Link>
+            </div>
+          </div>
+
+          <SearchBar placeholder="Search players, teams, and match terrain..." />
         </div>
+      </section>
 
-        <div className="flex h-14 w-14 items-center justify-center rounded-3xl border border-emerald-400/15 bg-emerald-400/10">
-          <FontAwesomeIcon icon={faEye} className="h-6 w-6 text-[#38FF9C]" />
-        </div>
-      </div>
+      <section className="relative z-0 mt-6 grid min-w-0 gap-4 sm:mt-8 sm:gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <StatsCard
+          title="Live Matches"
+          value={activeMatches.length}
+          change="Synced"
+          icon={faShieldHalved}
+          description="Current football terrain feeds with live tactical state."
+        />
+        <StatsCard
+          title="Peak Momentum"
+          value={`${Math.round(peakMomentum)}%`}
+          change="+12%"
+          icon={faChartLine}
+          description="Highest elevation point from the active momentum curve."
+        />
+        <StatsCard
+          title="Heat Zones"
+          value={zones.high}
+          change="High"
+          icon={faFire}
+          description="High-intensity traversal zones detected on the pitch."
+        />
+        <StatsCard
+          title="Traversal"
+          value={`${formatNumber(8.4)}M`}
+          change="Season"
+          icon={faRoute}
+          description="Aggregated movement events powering spatial analysis."
+        />
+      </section>
 
-      {/* MODULES */}
+      <section className="mt-6 grid min-w-0 gap-6 sm:mt-8 sm:gap-8 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+        <div className="min-w-0 space-y-6 sm:space-y-8">
+          <LeagueTable
+            standings={sampleStandings}
+            leagueName="Premier League"
+          />
 
-      <div className="relative z-10 space-y-4">
-        {dashboardModules.map((module) => {
-          const active = enabledModules.includes(module.id)
+          {loading && <LoadingSpinner />}
 
-          return (
-            <motion.button
-              key={module.id}
-              whileTap={{
-                scale: 0.98,
-              }}
-              type="button"
-              onClick={() => toggleModule(module.id)}
-              className={`flex w-full items-center justify-between rounded-4xl border px-5 py-5 text-left transition-all duration-300 ${
-                active
-                  ? 'border-emerald-400/15 bg-emerald-400/10'
-                  : 'border-white/6 bg-white/3 hover:border-emerald-400/12 hover:bg-emerald-400/6'
-              }`}
-            >
-              {/* LEFT */}
+          {error && (
+            <ErrorState
+              title="Live Feed Fallback Active"
+              description="The external match feed is unavailable, so PitchAtlas is using its local terrain simulation."
+            />
+          )}
 
-              <div className="flex items-center gap-5">
-                <div
-                  className={`flex h-14 w-14 items-center justify-center rounded-2xl border ${
-                    active
-                      ? 'border-emerald-400/15 bg-emerald-400/10'
-                      : 'border-white/6 bg-[#0c1728]'
-                  }`}
+          {!loading && !error && visibleMatches.length > 0 && (
+            <div className="space-y-5">
+              <RecentMatchesList matches={dashboardMatches} />
+
+              {dashboardMatchLimit < visibleMatches.length && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    setDashboardMatchLimit((current) => current + 3)
+                  }
+                  className="w-full rounded-[22px] border border-emerald-400/15 bg-emerald-400/10 px-5 py-4 text-sm font-black uppercase tracking-[0.14em] text-[#38FF9C] transition-all duration-300 hover:border-emerald-400/30 hover:bg-emerald-400/15"
                 >
-                  <FontAwesomeIcon
-                    icon={module.icon}
-                    className={`h-5 w-5 ${
-                      active ? 'text-[#38FF9C]' : 'text-white/55'
-                    }`}
-                  />
-                </div>
+                  Show More Matches
+                </button>
+              )}
+            </div>
+          )}
+        </div>
 
-                <div>
-                  <h4 className="font-bold text-white">{module.title}</h4>
-
-                  <p className="mt-1 text-sm text-white/45">
-                    Visualization module
-                  </p>
-                </div>
+        <div className="min-w-0 space-y-6 sm:space-y-8">
+          <div className="premium-panel min-w-0 rounded-[26px] p-5 sm:p-6">
+            <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div className="min-w-0">
+                <h2 className="text-3xl font-black text-white">
+                  Terrain Heatmap
+                </h2>
+                <p className="mt-2 text-sm text-white/45">
+                  {selectedPlayer} movement density
+                </p>
               </div>
+              <IntensityLegend />
+            </div>
 
-              {/* TOGGLE */}
+            <PitchCanvas
+              intensityFloor={intensityFloor}
+              showPaths={showPaths}
+              className="min-h-[250px] sm:min-h-[300px]"
+            />
 
-              <div
-                className={`relative flex h-8 w-16 items-center rounded-full transition-all duration-300 ${
-                  active ? 'bg-emerald-400/20' : 'bg-white/8'
-                }`}
-              >
-                <motion.div
-                  animate={{
-                    x: active ? 34 : 4,
-                  }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 300,
-                    damping: 20,
-                  }}
-                  className={`h-6 w-6 rounded-full ${
-                    active ? 'bg-[#38FF9C]' : 'bg-white/40'
-                  }`}
+            <div className="mt-4 grid min-w-0 gap-4 2xl:grid-cols-[minmax(0,1fr)_230px]">
+              <HeatmapControls
+                intensityFloor={intensityFloor}
+                onIntensityFloorChange={setIntensityFloor}
+                showPaths={showPaths}
+                onShowPathsChange={setShowPaths}
+                mode={heatmapMode}
+                onModeChange={setHeatmapMode}
+              />
+              <div className="grid gap-4">
+                <PlayerSelector
+                  value={selectedPlayer}
+                  onChange={setSelectedPlayer}
+                />
+                <GraphTooltip
+                  label="Heat Mode"
+                  value={heatmapMode}
+                  detail={`${zones.high} peak zones active`}
                 />
               </div>
-            </motion.button>
-          )
-        })}
-      </div>
-    </div>
+            </div>
+          </div>
+
+          <ElevationChart
+            momentum={momentum}
+            title="Momentum Elevation"
+            subtitle="Pressure, transitions, and tactical spikes"
+          />
+        </div>
+      </section>
+
+      <section className="mt-6 sm:mt-8">
+        <TopPlayersCarousel players={samplePlayers} />
+      </section>
+    </DashboardLayout>
   )
 }

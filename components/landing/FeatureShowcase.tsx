@@ -166,7 +166,7 @@ export default function FeatureShowcase() {
               <div className="relative z-10">
                 {/* ICON */}
 
-                <div className="flex h-16 w-16 items-center justify-center rounded-3xl border border-emerald-400/15 bg-emerald-400/10 shadow-[0_0_30px_rgba(56,255,156,0.08)]">
+                <div className="flex h-16 w-16 mb-6 items-center justify-center rounded-3xl border border-emerald-400/15 bg-emerald-400/10 shadow-[0_0_30px_rgba(56,255,156,0.08)]">
                   <FontAwesomeIcon
                     icon={feature.icon}
                     className="h-7 w-7 text-[#38FF9C]"

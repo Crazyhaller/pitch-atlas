@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion } from 'motion/react'
 
 import { Match } from '@/types/match'
+import { formatDate } from '@/lib/utils/formatDate'
 
 interface MatchCardProps {
   match: Match
@@ -22,7 +23,7 @@ export default function MatchCard({ match }: MatchCardProps) {
     >
       <Link
         href={`/match/${match.id}`}
-        className="group relative block overflow-hidden rounded-[30px] border border-white/8 bg-[#08111f]/75 p-6 transition-all duration-300 hover:border-emerald-400/15"
+        className="premium-panel group relative block min-w-0 overflow-hidden rounded-[24px] p-5 transition-all duration-300 hover:border-emerald-400/20 sm:p-6"
       >
         {/* GLOW */}
 
@@ -31,16 +32,18 @@ export default function MatchCard({ match }: MatchCardProps) {
         <div className="relative z-10">
           {/* HEADER */}
 
-          <div className="mb-6 flex items-center justify-between">
-            <div>
+          <div className="mb-6 flex items-start justify-between gap-4">
+            <div className="min-w-0">
               <p className="text-xs uppercase tracking-[0.16em] text-white/40">
                 {match.league.name}
               </p>
 
-              <p className="mt-2 text-sm text-white/55">{match.status.long}</p>
+              <p className="mt-2 text-sm leading-6 text-white/55">
+                {match.status.long} - {formatDate(match.utcDate)}
+              </p>
             </div>
 
-            <div className="rounded-full border border-emerald-400/15 bg-emerald-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#38FF9C]">
+            <div className="shrink-0 rounded-full border border-emerald-400/15 bg-emerald-400/10 px-3 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#38FF9C] sm:px-4">
               {match.status.short}
             </div>
           </div>
@@ -50,9 +53,9 @@ export default function MatchCard({ match }: MatchCardProps) {
           <div className="space-y-5">
             {/* HOME */}
 
-            <div className="flex items-center justify-between gap-5">
-              <div className="flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl border border-white/8 bg-[#0b1524]">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/8 bg-[#0b1524] sm:h-14 sm:w-14">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={match.homeTeam.crest}
@@ -61,8 +64,8 @@ export default function MatchCard({ match }: MatchCardProps) {
                   />
                 </div>
 
-                <div>
-                  <h3 className="font-black text-white">
+                <div className="min-w-0">
+                  <h3 className="truncate font-black text-white">
                     {match.homeTeam.shortName}
                   </h3>
 
@@ -72,16 +75,16 @@ export default function MatchCard({ match }: MatchCardProps) {
                 </div>
               </div>
 
-              <div className="text-4xl font-black text-white">
+              <div className="shrink-0 text-3xl font-black text-white sm:text-4xl">
                 {match.score.home}
               </div>
             </div>
 
             {/* AWAY */}
 
-            <div className="flex items-center justify-between gap-5">
-              <div className="flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl border border-white/8 bg-[#0b1524]">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/8 bg-[#0b1524] sm:h-14 sm:w-14">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={match.awayTeam.crest}
@@ -90,8 +93,8 @@ export default function MatchCard({ match }: MatchCardProps) {
                   />
                 </div>
 
-                <div>
-                  <h3 className="font-black text-white">
+                <div className="min-w-0">
+                  <h3 className="truncate font-black text-white">
                     {match.awayTeam.shortName}
                   </h3>
 
@@ -101,7 +104,7 @@ export default function MatchCard({ match }: MatchCardProps) {
                 </div>
               </div>
 
-              <div className="text-4xl font-black text-white">
+              <div className="shrink-0 text-3xl font-black text-white sm:text-4xl">
                 {match.score.away}
               </div>
             </div>

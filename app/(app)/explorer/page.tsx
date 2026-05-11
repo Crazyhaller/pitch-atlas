@@ -1,94 +1,97 @@
 'use client'
 
-import DashboardLayout from '@/components/layout/DashboardLayout'
+import events from '@/mock/events.json'
+import movement from '@/mock/playerMovement.json'
 
+import DashboardLayout from '@/components/layout/DashboardLayout'
 import LoadingSpinner from '@/components/shared/LoadingSpinner'
 import ErrorState from '@/components/shared/ErrorState'
+import ElevationChart from '@/components/charts/ElevationChart'
+import EventMarkers from '@/components/charts/EventMarkers'
+import TimelineSlider from '@/components/charts/TimelineSlider'
+import EventInfoPanel from '@/components/explorer/EventInfoPanel'
+import ExplorerCanvas from '@/components/explorer/ExplorerCanvas'
+import MatchMiniMap from '@/components/explorer/MatchMiniMap'
+import PlaybackControls from '@/components/explorer/PlaybackControls'
 
 import { useMatches } from '@/hooks/useMatches'
+import { useMomentumData } from '@/hooks/useMomentumData'
+import { mapEventsToTimeline } from '@/lib/data/mapEventsToTimeline'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import {
+  setCurrentTime,
+  setSelectedEvent,
+} from '@/store/slices/explorerSlice'
+import { MatchEvent } from '@/types/match'
+import { PlayerMovementPoint } from '@/types/player'
+
+const explorerEvents = events as MatchEvent[]
+const movementPoints = movement as PlayerMovementPoint[]
 
 export default function ExplorerPage() {
   const { matches, loading, error } = useMatches()
-
+  const momentum = useMomentumData()
+  const dispatch = useAppDispatch()
+  const currentTime = useAppSelector((state) => state.explorer.currentTime)
+  const timelineEvents = mapEventsToTimeline(explorerEvents)
   const activeMatch = matches[0]
 
   return (
     <DashboardLayout>
-      {/* LOADING */}
-
       {loading && <LoadingSpinner fullScreen />}
-
-      {/* ERROR */}
 
       {error && (
         <ErrorState
-          title="Explorer System Failure"
-          description="The immersive football terrain explorer could not initialize correctly."
+          title="Explorer System Fallback Active"
+          description="The live feed could not initialize, but the local cinematic replay engine is ready."
         />
       )}
 
-      {/* CONTENT */}
-
-      {!loading && !error && activeMatch && (
+      {!loading && (
         <>
-          {/* HERO */}
-
-          <section className="relative overflow-hidden rounded-[36px] border border-white/8 bg-[#08111f]/75 p-8 shadow-[0_0_100px_rgba(56,255,156,0.08)] backdrop-blur-2xl md:p-10">
-            {/* GLOW */}
-
-            <div className="absolute left-[10%] top-0 h-48 w-48 rounded-full bg-emerald-400/10 blur-[100px]" />
-
-            <div className="absolute bottom-0 right-[10%] h-56 w-56 rounded-full bg-lime-300/10 blur-[120px]" />
-
-            {/* GRID */}
-
+          <section className="premium-panel relative overflow-hidden rounded-[28px] p-6 sm:p-8 md:p-10">
             <div className="absolute inset-0 grid-overlay opacity-[0.04]" />
+            <div className="absolute right-[10%] top-0 h-56 w-56 rounded-full bg-emerald-400/10 blur-[120px]" />
 
-            <div className="relative z-10">
-              {/* BADGE */}
+            <div className="relative z-10 grid min-w-0 gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(300px,360px)] xl:items-end">
+              <div className="min-w-0">
+                <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-emerald-400/15 bg-emerald-400/10 px-5 py-2">
+                  <span className="h-2 w-2 rounded-full bg-[#38FF9C]" />
+                  <span className="text-xs font-bold uppercase tracking-[0.22em] text-[#9FFFCF]">
+                    Interactive Match Explorer
+                  </span>
+                </div>
 
-              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-emerald-400/15 bg-emerald-400/10 px-5 py-2">
-                <div className="h-2 w-2 rounded-full bg-[#38FF9C]" />
+                <h1 className="text-4xl font-black leading-[0.95] tracking-[-0.06em] text-white md:text-6xl">
+                  Football Terrain
+                  <span className="gradient-text block">
+                    Exploration Engine
+                  </span>
+                </h1>
 
-                <span className="text-xs font-bold uppercase tracking-[0.22em] text-[#9FFFCF]">
-                  Interactive Match Explorer
-                </span>
+                <p className="mt-7 max-w-3xl text-lg leading-9 text-white/62">
+                  Replay tactical movements, event pressure, terrain heat, and
+                  momentum elevation as one synchronized cinematic football
+                  journey.
+                </p>
               </div>
 
-              {/* TITLE */}
-
-              <h1 className="text-4xl font-black leading-[0.95] tracking-[-0.06em] text-white md:text-6xl">
-                Football Terrain
-                <span className="gradient-text block">Exploration Engine</span>
-              </h1>
-
-              {/* DESCRIPTION */}
-
-              <p className="mt-7 max-w-3xl text-lg leading-9 text-white/62">
-                Traverse football matches as immersive journeys with event
-                playback, terrain overlays, momentum elevation, and tactical
-                movement visualization.
-              </p>
-
-              {/* STATS */}
-
-              <div className="mt-12 grid gap-5 md:grid-cols-4">
+              <div className="grid min-w-0 grid-cols-2 gap-3 sm:gap-4">
                 {[
                   {
-                    label: 'Active Match',
-                    value: activeMatch.homeTeam.shortName,
+                    label: 'Match',
+                    value: activeMatch
+                      ? activeMatch.homeTeam.shortName
+                      : 'MCI',
                   },
-
                   {
-                    label: 'Momentum',
-                    value: '91%',
+                    label: 'Minute',
+                    value: `${Math.round(currentTime)}'`,
                   },
-
                   {
-                    label: 'Traversal',
-                    value: '8.4M',
+                    label: 'Events',
+                    value: timelineEvents.length,
                   },
-
                   {
                     label: 'Terrain',
                     value: 'Elite',
@@ -96,13 +99,12 @@ export default function ExplorerPage() {
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-3xl border border-white/6 bg-white/3 p-6"
+                    className="rounded-[22px] border border-white/6 bg-white/[0.03] p-4 sm:p-5"
                   >
-                    <h3 className="text-3xl font-black text-white">
+                    <h3 className="text-2xl font-black text-white sm:text-3xl">
                       {item.value}
                     </h3>
-
-                    <p className="mt-3 text-xs uppercase tracking-[0.14em] text-white/40">
+                    <p className="mt-2 text-xs uppercase tracking-[0.14em] text-white/40">
                       {item.label}
                     </p>
                   </div>
@@ -111,247 +113,56 @@ export default function ExplorerPage() {
             </div>
           </section>
 
-          {/* EXPLORER */}
-
-          <section className="mt-8 grid gap-8 xl:grid-cols-[1fr_420px]">
-            {/* LEFT */}
-
-            <div className="relative overflow-hidden rounded-[36px] border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
-              {/* HEADER */}
-
-              <div className="mb-8 flex items-center justify-between">
-                <div>
+          <section className="mt-6 grid min-w-0 gap-6 sm:mt-8 sm:gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(320px,390px)]">
+            <div className="premium-panel min-w-0 space-y-6 rounded-[28px] p-5 sm:p-6">
+              <div className="flex flex-col gap-5 2xl:flex-row 2xl:items-center 2xl:justify-between">
+                <div className="min-w-0">
                   <h2 className="text-3xl font-black text-white">
                     Match Terrain
                   </h2>
-
                   <p className="mt-2 text-sm text-white/45">
-                    Spatial replay system
+                    Canvas heatmap, SVG event paths, replay controls
                   </p>
                 </div>
-
-                <div className="rounded-full border border-emerald-400/15 bg-emerald-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#38FF9C]">
-                  Live Explorer
-                </div>
+                <PlaybackControls />
               </div>
 
-              {/* CANVAS */}
+              <ExplorerCanvas events={explorerEvents} movement={movementPoints} />
 
-              <div className="relative aspect-16/10 overflow-hidden rounded-4xl border border-white/6 bg-[#06101b]">
-                {/* GRID */}
-
-                <div className="absolute inset-0 grid-overlay opacity-[0.06]" />
-
-                {/* PITCH */}
-
-                <div className="absolute inset-8 rounded-[28px] border-2 border-[#38FF9C]/30">
-                  {/* CENTER */}
-
-                  <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[#38FF9C]/20" />
-
-                  <div className="absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#38FF9C]/25" />
-
-                  {/* GOALS */}
-
-                  <div className="absolute left-0 top-1/2 h-48 w-16 -translate-y-1/2 border border-l-0 border-[#38FF9C]/25" />
-
-                  <div className="absolute right-0 top-1/2 h-48 w-16 -translate-y-1/2 border border-r-0 border-[#38FF9C]/25" />
-
-                  {/* EVENT NODES */}
-
-                  {[
-                    {
-                      x: '18%',
-                      y: '32%',
-                    },
-
-                    {
-                      x: '42%',
-                      y: '54%',
-                    },
-
-                    {
-                      x: '68%',
-                      y: '28%',
-                    },
-
-                    {
-                      x: '76%',
-                      y: '72%',
-                    },
-
-                    {
-                      x: '55%',
-                      y: '44%',
-                    },
-                  ].map((node, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        left: node.x,
-                        top: node.y,
-                      }}
-                      className="absolute"
-                    >
-                      {/* GLOW */}
-
-                      <div className="absolute left-1/2 top-1/2 h-14 w-14 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400/20 blur-2xl" />
-
-                      {/* DOT */}
-
-                      <div className="relative h-5 w-5 rounded-full border-2 border-white bg-[#38FF9C]" />
-                    </div>
-                  ))}
-
-                  {/* PATH */}
-
-                  <svg
-                    viewBox="0 0 1000 600"
-                    preserveAspectRatio="none"
-                    className="absolute inset-0 h-full w-full"
-                  >
-                    <path
-                      d="M180 190 C260 250, 380 300, 540 200 S720 160, 760 430"
-                      fill="none"
-                      stroke="#38FF9C"
-                      strokeWidth="4"
-                      strokeDasharray="14 12"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {/* CONTROLS */}
-
-              <div className="mt-7 flex flex-wrap items-center gap-4">
-                {['Play', 'Pause', 'Replay', 'Heatmap', 'Momentum'].map(
-                  (control) => (
-                    <button
-                      key={control}
-                      className="rounded-full border border-white/8 bg-white/3 px-5 py-3 text-sm font-bold uppercase tracking-[0.12em] text-white/70 transition-all duration-300 hover:border-emerald-400/15 hover:bg-emerald-400/10 hover:text-[#38FF9C]"
-                    >
-                      {control}
-                    </button>
-                  ),
-                )}
+              <div className="rounded-[24px] border border-white/8 bg-[#06101b]/80 p-5">
+                <TimelineSlider
+                  value={currentTime}
+                  onChange={(value) => dispatch(setCurrentTime(value))}
+                />
+                <EventMarkers
+                  events={explorerEvents}
+                  currentMinute={currentTime}
+                  onSelect={(event) => dispatch(setSelectedEvent(event))}
+                />
               </div>
             </div>
 
-            {/* RIGHT */}
+            <div className="min-w-0 space-y-6 sm:space-y-8">
+              <EventInfoPanel fallbackEvent={explorerEvents[0]} />
 
-            <div className="space-y-8">
-              {/* EVENTS */}
-
-              <div className="rounded-4xl border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
-                <div className="mb-8">
-                  <h2 className="text-3xl font-black text-white">
-                    Event Timeline
-                  </h2>
-
+              <div className="premium-panel rounded-[26px] p-5 sm:p-6">
+                <div className="mb-5">
+                  <h2 className="text-2xl font-black text-white">Minimap</h2>
                   <p className="mt-2 text-sm text-white/45">
-                    Spatial event feed
+                    Event density across the pitch
                   </p>
                 </div>
-
-                <div className="space-y-4">
-                  {[
-                    {
-                      minute: "12'",
-                      event: 'Goal',
-                      player: 'Haaland',
-                    },
-
-                    {
-                      minute: "27'",
-                      event: 'Sprint Burst',
-                      player: 'Saka',
-                    },
-
-                    {
-                      minute: "44'",
-                      event: 'Shot',
-                      player: 'Foden',
-                    },
-
-                    {
-                      minute: "58'",
-                      event: 'Traversal Peak',
-                      player: 'Rice',
-                    },
-
-                    {
-                      minute: "81'",
-                      event: 'Goal',
-                      player: 'De Bruyne',
-                    },
-                  ].map((item, index) => (
-                    <div
-                      key={index}
-                      className="rounded-3xl border border-white/6 bg-white/3 p-5"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-black text-white">
-                            {item.event}
-                          </h3>
-
-                          <p className="mt-2 text-sm text-white/45">
-                            {item.player}
-                          </p>
-                        </div>
-
-                        <div className="rounded-full border border-emerald-400/15 bg-emerald-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#38FF9C]">
-                          {item.minute}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <MatchMiniMap
+                  events={explorerEvents}
+                  currentMinute={currentTime}
+                />
               </div>
 
-              {/* MOMENTUM */}
-
-              <div className="rounded-4xl border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
-                <div className="mb-8">
-                  <h2 className="text-3xl font-black text-white">
-                    Elevation Curve
-                  </h2>
-
-                  <p className="mt-2 text-sm text-white/45">
-                    Momentum terrain graph
-                  </p>
-                </div>
-
-                {/* CHART */}
-
-                <div className="relative h-65 overflow-hidden rounded-[28px] border border-white/6 bg-[#06101b]">
-                  {/* GRID */}
-
-                  <div className="absolute inset-0 grid-overlay opacity-[0.06]" />
-
-                  {/* SVG */}
-
-                  <svg
-                    viewBox="0 0 1000 260"
-                    preserveAspectRatio="none"
-                    className="absolute inset-0 h-full w-full"
-                  >
-                    <path
-                      d="M0 200 C120 160, 240 180, 340 120 S520 80, 680 120 S840 60, 1000 30"
-                      fill="none"
-                      stroke="#38FF9C"
-                      strokeWidth="5"
-                      strokeLinecap="round"
-                    />
-
-                    <path
-                      d="M0 200 C120 160, 240 180, 340 120 S520 80, 680 120 S840 60, 1000 30 L1000 260 L0 260 Z"
-                      fill="rgba(56,255,156,0.12)"
-                    />
-                  </svg>
-                </div>
-              </div>
+              <ElevationChart
+                momentum={momentum}
+                title="Momentum Overlay"
+                subtitle="Synchronized tactical elevation"
+              />
             </div>
           </section>
         </>

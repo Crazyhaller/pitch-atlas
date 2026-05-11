@@ -21,9 +21,7 @@ export function useMatch(matchId: number | string) {
         const data = await fetchMatchDetails(matchId)
 
         setMatch(data)
-      } catch (err) {
-        console.error(err)
-
+      } catch {
         setError('Failed to fetch match')
       } finally {
         setLoading(false)

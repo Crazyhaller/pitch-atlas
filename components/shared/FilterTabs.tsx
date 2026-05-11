@@ -16,7 +16,7 @@ export default function FilterTabs({
   onChange,
 }: FilterTabsProps) {
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="x-scroll -mx-1 flex items-center gap-2 px-1 pb-1 sm:flex-wrap sm:gap-3">
       {tabs.map((tab) => {
         const active = activeTab === tab.value
 
@@ -25,7 +25,7 @@ export default function FilterTabs({
             key={tab.value}
             type="button"
             onClick={() => onChange(tab.value)}
-            className={`relative overflow-hidden rounded-full px-5 py-3 text-sm font-semibold transition-all duration-300 ${
+            className={`relative shrink-0 overflow-hidden rounded-full px-4 py-3 text-sm font-semibold transition-all duration-300 sm:px-5 ${
               active
                 ? 'text-[#38FF9C]'
                 : 'border border-white/8 bg-white/3 text-white/60 hover:text-white'

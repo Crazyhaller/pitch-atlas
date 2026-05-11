@@ -58,7 +58,7 @@ export default function Footer() {
           <div className="max-w-lg">
             <div className="mb-6 flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-400/20 bg-emerald-400/10">
-                <span className="text-lg font-black text-[#38FF9C]">AX</span>
+                <span className="text-lg font-black text-[#38FF9C]">PA</span>
               </div>
 
               <div>
@@ -125,7 +125,7 @@ export default function Footer() {
         {/* BOTTOM */}
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/6 py-6 text-center text-sm text-white/40 lg:flex-row">
-          <p>© 2026 PitchAtlas. All rights reserved.</p>
+          <p>(c) 2026 PitchAtlas. All rights reserved.</p>
 
           <p>Designed for immersive football intelligence.</p>
         </div>

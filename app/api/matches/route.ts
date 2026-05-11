@@ -1,12 +1,20 @@
 import { NextResponse } from 'next/server'
 
+import { sampleMatches } from '@/lib/data/sampleFootball'
+
 export async function GET() {
   try {
+    const token = process.env.FOOTBALL_DATA_API_KEY
+
+    if (!token) {
+      return NextResponse.json(sampleMatches)
+    }
+
     const response = await fetch(
       'https://api.football-data.org/v4/competitions/PL/matches',
       {
         headers: {
-          'X-Auth-Token': process.env.FOOTBALL_DATA_API_KEY ?? '',
+          'X-Auth-Token': token,
         },
 
         next: {
@@ -22,15 +30,7 @@ export async function GET() {
     const data = await response.json()
 
     return NextResponse.json(data)
-  } catch (error) {
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
-
-      {
-        status: 500,
-      },
-    )
+  } catch {
+    return NextResponse.json(sampleMatches)
   }
 }

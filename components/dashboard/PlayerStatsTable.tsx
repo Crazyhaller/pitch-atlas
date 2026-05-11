@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 import { motion } from 'motion/react'
 
 import { Player } from '@/types/player'
@@ -10,12 +12,12 @@ interface PlayerStatsTableProps {
 
 export default function PlayerStatsTable({ players }: PlayerStatsTableProps) {
   return (
-    <div className="relative overflow-hidden rounded-4xl border border-white/8 bg-[#08111f]/75 backdrop-blur-2xl">
+    <div className="premium-panel relative min-w-0 overflow-hidden rounded-[26px]">
       {/* HEADER */}
 
-      <div className="flex items-center justify-between border-b border-white/6 px-7 py-6">
-        <div>
-          <h2 className="text-3xl font-black text-white">
+      <div className="flex flex-col gap-4 border-b border-white/6 px-5 py-5 sm:px-7 sm:py-6 md:flex-row md:items-center md:justify-between">
+        <div className="min-w-0">
+          <h2 className="text-2xl font-black text-white sm:text-3xl">
             Player Terrain Stats
           </h2>
 
@@ -31,8 +33,8 @@ export default function PlayerStatsTable({ players }: PlayerStatsTableProps) {
 
       {/* TABLE */}
 
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-190">
+      <div className="x-scroll">
+        <table className="w-full min-w-[700px]">
           <thead>
             <tr className="border-b border-white/6">
               {[
@@ -73,13 +75,18 @@ export default function PlayerStatsTable({ players }: PlayerStatsTableProps) {
                 {/* PLAYER */}
 
                 <td className="px-6 py-5">
-                  <div>
-                    <h3 className="font-bold text-white">{player.name}</h3>
+                  <Link
+                    href={`/player/${player.id}`}
+                    className="group/player block rounded-xl"
+                  >
+                    <h3 className="font-bold text-white transition-colors group-hover/player:text-[#38FF9C]">
+                      {player.name}
+                    </h3>
 
                     <p className="mt-1 text-xs uppercase tracking-[0.12em] text-white/35">
-                      Explorer Profile
+                      Open explorer profile
                     </p>
-                  </div>
+                  </Link>
                 </td>
 
                 {/* POSITION */}

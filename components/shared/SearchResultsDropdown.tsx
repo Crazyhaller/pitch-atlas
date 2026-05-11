@@ -82,12 +82,12 @@ export default function SearchResultsDropdown({
           transition={{
             duration: 0.2,
           }}
-          className="absolute left-0 top-[calc(100%+14px)] z-50 w-full overflow-hidden rounded-[28px] border border-white/8 bg-[#08111f]/95 shadow-[0_20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl"
+          className="absolute top-full left-0 right-0 mt-2 z-[9999] w-full overflow-hidden rounded-[22px] border border-white/8 bg-[#08111f]/95 shadow-[0_20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:rounded-[28px]"
         >
           {/* HEADER */}
 
-          <div className="flex items-center justify-between border-b border-white/6 px-6 py-5">
-            <div>
+          <div className="flex items-center justify-between gap-4 border-b border-white/6 px-4 py-4 sm:px-6 sm:py-5">
+            <div className="min-w-0">
               <h4 className="text-sm font-bold uppercase tracking-[0.18em] text-white">
                 Search Results
               </h4>
@@ -97,7 +97,7 @@ export default function SearchResultsDropdown({
               </p>
             </div>
 
-            <div className="rounded-full border border-emerald-400/15 bg-emerald-400/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-[#38FF9C]">
+            <div className="shrink-0 rounded-full border border-emerald-400/15 bg-emerald-400/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-[#38FF9C]">
               {results.length} Found
             </div>
           </div>
@@ -145,17 +145,17 @@ export default function SearchResultsDropdown({
           {/* RESULTS */}
 
           {!loading && results.length > 0 && (
-            <div className="max-h-105 overflow-y-auto p-3">
+            <div className="max-h-105 overflow-y-auto p-2 sm:p-3">
               {results.map((result) => (
                 <Link
                   key={`${result.type}-${result.id}`}
                   href={getResultHref(result)}
                   onClick={onClose}
-                  className="group flex items-center gap-5 rounded-2xl border border-transparent px-5 py-5 transition-all duration-300 hover:border-emerald-400/12 hover:bg-emerald-400/6"
+                  className="group flex items-center gap-3 rounded-2xl border border-transparent px-3 py-4 transition-all duration-300 hover:border-emerald-400/12 hover:bg-emerald-400/6 sm:gap-5 sm:px-5 sm:py-5"
                 >
                   {/* ICON */}
 
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/6 bg-white/3 transition-all duration-300 group-hover:border-emerald-400/15 group-hover:bg-emerald-400/10">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/6 bg-white/3 transition-all duration-300 group-hover:border-emerald-400/15 group-hover:bg-emerald-400/10 sm:h-14 sm:w-14">
                     <FontAwesomeIcon
                       icon={getResultIcon(result.type)}
                       className="h-5 w-5 text-[#38FF9C]"
@@ -164,8 +164,8 @@ export default function SearchResultsDropdown({
 
                   {/* CONTENT */}
 
-                  <div className="flex-1">
-                    <h4 className="font-bold text-white transition-colors duration-300 group-hover:text-[#38FF9C]">
+                  <div className="min-w-0 flex-1">
+                    <h4 className="truncate font-bold text-white transition-colors duration-300 group-hover:text-[#38FF9C]">
                       {result.title}
                     </h4>
 
@@ -178,7 +178,7 @@ export default function SearchResultsDropdown({
 
                   {/* TYPE */}
 
-                  <div className="rounded-full border border-white/8 bg-white/3 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white/45">
+                  <div className="hidden rounded-full border border-white/8 bg-white/3 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white/45 sm:block">
                     {result.type}
                   </div>
                 </Link>

@@ -3,6 +3,8 @@ import { APP_CONFIG } from '@/constants/config'
 import { FootballDataStandingsResponse } from '@/types/api'
 import { TeamStanding } from '@/types/team'
 
+import { sampleStandings } from '@/lib/data/sampleFootball'
+
 export async function fetchStandings(): Promise<TeamStanding[]> {
   try {
     const response = await fetch(
@@ -28,6 +30,13 @@ export async function fetchStandings(): Promise<TeamStanding[]> {
       data.standings?.[0]?.table.map((team) => ({
         position: team.position,
 
+        team: {
+          id: team.team.id,
+          name: team.team.name,
+          shortName: team.team.shortName,
+          crest: team.team.crest,
+        },
+
         playedGames: team.playedGames,
 
         won: team.won,
@@ -45,9 +54,7 @@ export async function fetchStandings(): Promise<TeamStanding[]> {
         points: team.points,
       })) ?? []
     )
-  } catch (error) {
-    console.error(error)
-
-    return []
+  } catch {
+    return sampleStandings
   }
 }

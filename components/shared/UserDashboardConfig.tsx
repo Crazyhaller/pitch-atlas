@@ -1,7 +1,5 @@
 'use client'
 
-import { useState } from 'react'
-
 import { motion } from 'motion/react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,6 +11,9 @@ import {
   faFire,
   faLayerGroup,
 } from '@fortawesome/free-solid-svg-icons'
+
+import { APP_CONFIG } from '@/constants/config'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 
 const dashboardModules = [
   {
@@ -41,11 +42,10 @@ const dashboardModules = [
 ]
 
 export default function UserDashboardConfig() {
-  const [enabledModules, setEnabledModules] = useState<string[]>([
-    'heatmap',
-    'momentum',
-    'explorer',
-  ])
+  const [enabledModules, setEnabledModules] = useLocalStorage<string[]>(
+    APP_CONFIG.storage.dashboard,
+    ['heatmap', 'momentum', 'explorer'],
+  )
 
   function toggleModule(moduleId: string) {
     setEnabledModules((previous) => {
@@ -60,15 +60,15 @@ export default function UserDashboardConfig() {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-4xl border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
+    <div className="premium-panel relative overflow-hidden rounded-[26px] p-5 sm:p-7">
       {/* GLOW */}
 
       <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-emerald-400/10 blur-[100px]" />
 
       {/* HEADER */}
 
-      <div className="relative z-10 mb-8 flex items-center justify-between">
-        <div>
+      <div className="relative z-10 mb-8 flex items-start justify-between gap-4">
+        <div className="min-w-0">
           <h3 className="text-2xl font-black text-white">Dashboard Modules</h3>
 
           <p className="mt-1 text-sm text-white/45">
@@ -95,7 +95,7 @@ export default function UserDashboardConfig() {
               }}
               type="button"
               onClick={() => toggleModule(module.id)}
-              className={`flex w-full items-center justify-between rounded-3xl border px-5 py-5 text-left transition-all duration-300 ${
+              className={`flex w-full items-center justify-between gap-4 rounded-[22px] border px-4 py-4 text-left transition-all duration-300 sm:px-5 sm:py-5 ${
                 active
                   ? 'border-emerald-400/15 bg-emerald-400/10'
                   : 'border-white/6 bg-white/3 hover:border-emerald-400/12 hover:bg-emerald-400/6'
@@ -103,7 +103,7 @@ export default function UserDashboardConfig() {
             >
               {/* LEFT */}
 
-              <div className="flex items-center gap-5">
+              <div className="flex min-w-0 items-center gap-4 sm:gap-5">
                 <div
                   className={`flex h-14 w-14 items-center justify-center rounded-2xl border ${
                     active
@@ -119,8 +119,10 @@ export default function UserDashboardConfig() {
                   />
                 </div>
 
-                <div>
-                  <h4 className="font-bold text-white">{module.title}</h4>
+                <div className="min-w-0">
+                  <h4 className="truncate font-bold text-white">
+                    {module.title}
+                  </h4>
 
                   <p className="mt-1 text-sm text-white/45">
                     Visualization module
@@ -131,7 +133,7 @@ export default function UserDashboardConfig() {
               {/* TOGGLE */}
 
               <div
-                className={`relative flex h-8 w-16 items-center rounded-full transition-all duration-300 ${
+                className={`relative flex h-8 w-16 shrink-0 items-center rounded-full transition-all duration-300 ${
                   active ? 'bg-emerald-400/20' : 'bg-white/8'
                 }`}
               >

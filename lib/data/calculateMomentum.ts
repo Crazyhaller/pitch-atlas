@@ -6,9 +6,9 @@ export function calculateMomentum(): MatchMomentumPoint[] {
   for (let minute = 1; minute <= 90; minute += 3) {
     const wave = Math.sin(minute / 9) * 30
 
-    const randomness = Math.random() * 18
+    const tacticalPulse = Math.cos(minute / 5) * 9
 
-    const intensity = Math.max(10, Math.min(100, 50 + wave + randomness))
+    const intensity = Math.max(10, Math.min(100, 55 + wave + tacticalPulse))
 
     points.push({
       minute,

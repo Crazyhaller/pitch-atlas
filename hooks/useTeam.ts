@@ -21,9 +21,7 @@ export function useTeam(teamId: number | string) {
         const data = await fetchTeam(teamId)
 
         setTeam(data)
-      } catch (err) {
-        console.error(err)
-
+      } catch {
         setError('Failed to fetch team')
       } finally {
         setLoading(false)

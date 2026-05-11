@@ -105,19 +105,19 @@ export default function ExplorePreviewPage() {
                 </div>
               </div>
 
-              <button
-                type="button"
+              <Link
+                href="/explorer"
                 className="btn-primary mt-6 w-full justify-center"
               >
                 <FontAwesomeIcon icon={faPlay} className="h-4 w-4" />
                 Start Exploration
-              </button>
+              </Link>
             </div>
           </div>
 
           {/* MAIN PREVIEW */}
 
-          <div className="mt-16 grid gap-8 xl:grid-cols-[1.1fr_0.9fr]">
+          <div className="mt-16 grid min-w-0 gap-8 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
             {/* LEFT */}
 
             <motion.div
@@ -132,11 +132,11 @@ export default function ExplorePreviewPage() {
               transition={{
                 duration: 0.8,
               }}
-              className="relative overflow-hidden rounded-[34px] border border-white/8 bg-[#08111f]/75 p-6 shadow-[0_0_100px_rgba(56,255,156,0.1)] backdrop-blur-2xl"
+              className="premium-panel relative min-w-0 overflow-hidden rounded-[28px] p-5 shadow-[0_0_100px_rgba(56,255,156,0.1)] sm:p-6"
             >
               {/* HEADER */}
 
-              <div className="mb-6 flex items-center justify-between">
+              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h3 className="text-2xl font-black text-white">
                     Terrain Explorer
@@ -154,7 +154,7 @@ export default function ExplorePreviewPage() {
 
               {/* PITCH */}
 
-              <div className="pitch-background relative aspect-[1.35/1] overflow-hidden rounded-[28px] border border-white/8">
+              <div className="pitch-background relative aspect-[1.35/1] min-h-72 overflow-hidden rounded-[24px] border border-white/8">
                 {/* GRID */}
 
                 <div className="absolute inset-0 grid grid-cols-8">
@@ -227,7 +227,7 @@ export default function ExplorePreviewPage() {
 
               {/* METRICS */}
 
-              <div className="mt-6 grid gap-4 md:grid-cols-4">
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
                 {[
                   {
                     icon: faFire,
@@ -276,7 +276,7 @@ export default function ExplorePreviewPage() {
 
             {/* RIGHT */}
 
-            <div className="space-y-8">
+            <div className="min-w-0 space-y-8">
               {/* MOMENTUM */}
 
               <motion.div
@@ -291,9 +291,9 @@ export default function ExplorePreviewPage() {
                 transition={{
                   duration: 0.9,
                 }}
-                className="relative overflow-hidden rounded-[30px] border border-white/8 bg-[#08111f]/75 p-6 backdrop-blur-2xl"
+                className="premium-panel relative min-w-0 overflow-hidden rounded-[26px] p-5 sm:p-6"
               >
-                <div className="mb-5 flex items-center justify-between">
+                <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h3 className="text-xl font-black text-white">
                       Elevation Curve
@@ -309,7 +309,7 @@ export default function ExplorePreviewPage() {
 
                 {/* CHART */}
 
-                <div className="relative h-65 overflow-hidden rounded-3xl border border-white/6 bg-[#06101b]">
+                <div className="relative h-64 overflow-hidden rounded-[22px] border border-white/6 bg-[#06101b] sm:h-65">
                   <div className="absolute inset-0 grid-overlay opacity-[0.06]" />
 
                   <svg
@@ -362,7 +362,7 @@ export default function ExplorePreviewPage() {
                 transition={{
                   duration: 1,
                 }}
-                className="rounded-[30px] border border-white/8 bg-[#08111f]/75 p-6 backdrop-blur-2xl"
+                className="premium-panel rounded-[26px] p-5 sm:p-6"
               >
                 <div className="mb-6">
                   <h3 className="text-xl font-black text-white">

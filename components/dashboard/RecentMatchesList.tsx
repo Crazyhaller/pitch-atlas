@@ -10,7 +10,7 @@ interface RecentMatchesListProps {
 
 export default function RecentMatchesList({ matches }: RecentMatchesListProps) {
   return (
-    <div className="grid gap-6 xl:grid-cols-2">
+    <div className="grid min-w-0 gap-5 2xl:grid-cols-2">
       {matches.map((match) => (
         <MatchCard key={match.id} match={match} />
       ))}

@@ -14,16 +14,16 @@ export default function TopPlayersCarousel({
   players,
 }: TopPlayersCarouselProps) {
   return (
-    <div className="relative overflow-hidden rounded-4xl border border-white/8 bg-[#08111f]/75 p-7 backdrop-blur-2xl">
+    <div className="premium-panel relative min-w-0 overflow-hidden rounded-[26px] p-5 sm:p-7">
       {/* GLOW */}
 
       <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-emerald-400/10 blur-[100px]" />
 
       {/* HEADER */}
 
-      <div className="relative z-10 mb-8 flex items-center justify-between">
-        <div>
-          <h2 className="text-3xl font-black text-white">
+      <div className="relative z-10 mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h2 className="text-2xl font-black text-white sm:text-3xl">
             Top Terrain Players
           </h2>
 
@@ -32,14 +32,14 @@ export default function TopPlayersCarousel({
           </p>
         </div>
 
-        <div className="rounded-full border border-emerald-400/15 bg-emerald-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#38FF9C]">
+        <div className="w-fit rounded-full border border-emerald-400/15 bg-emerald-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#38FF9C]">
           Elite
         </div>
       </div>
 
       {/* CAROUSEL */}
 
-      <div className="relative z-10 flex gap-6 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="x-scroll relative z-10 flex snap-x gap-4 pb-3 sm:gap-6">
         {players.map((player, index) => (
           <motion.div
             key={player.id}
@@ -57,11 +57,11 @@ export default function TopPlayersCarousel({
             whileHover={{
               y: -8,
             }}
-            className="min-w-[320px]"
+            className="min-w-[82vw] snap-start sm:min-w-[320px] lg:min-w-[340px]"
           >
             <Link
               href={`/player/${player.id}`}
-              className="group relative block overflow-hidden rounded-[30px] border border-white/8 bg-[#0b1524]/70 p-6 transition-all duration-300 hover:border-emerald-400/15"
+              className="group relative block h-full overflow-hidden rounded-[24px] border border-white/8 bg-[#0b1524]/70 p-5 transition-all duration-300 hover:border-emerald-400/20 sm:p-6"
             >
               {/* GLOW */}
 
@@ -72,8 +72,8 @@ export default function TopPlayersCarousel({
               <div className="relative z-10">
                 {/* TOP */}
 
-                <div className="flex items-start justify-between gap-5">
-                  <div>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
                     <div className="flex h-16 w-16 items-center justify-center rounded-3xl border border-emerald-400/15 bg-emerald-400/10 text-2xl font-black text-[#38FF9C]">
                       {player.name
                         .split(' ')
@@ -82,7 +82,7 @@ export default function TopPlayersCarousel({
                         .join('')}
                     </div>
 
-                    <h3 className="mt-5 text-2xl font-black text-white">
+                    <h3 className="mt-5 text-2xl font-black leading-tight text-white">
                       {player.name}
                     </h3>
 
@@ -91,7 +91,7 @@ export default function TopPlayersCarousel({
                     </p>
                   </div>
 
-                  <div className="rounded-full border border-emerald-400/15 bg-emerald-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#38FF9C]">
+                  <div className="shrink-0 rounded-full border border-emerald-400/15 bg-emerald-400/10 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#38FF9C]">
                     Top Form
                   </div>
                 </div>
@@ -139,8 +139,8 @@ export default function TopPlayersCarousel({
 
                 <div className="mt-6 border-t border-white/6 pt-5">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm text-white/45">
-                      Spatial analytics enabled
+                    <p className="text-sm font-semibold text-[#38FF9C]">
+                      Open profile
                     </p>
 
                     <div className="h-2 w-2 rounded-full bg-[#38FF9C]" />

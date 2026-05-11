@@ -10,7 +10,7 @@ export default function FavoritesPage() {
     <DashboardLayout>
       {/* HERO */}
 
-      <section className="relative overflow-hidden rounded-[36px] border border-white/8 bg-[#08111f]/75 p-8 shadow-[0_0_100px_rgba(56,255,156,0.08)] backdrop-blur-2xl md:p-10">
+      <section className="premium-panel relative overflow-hidden rounded-[28px] p-6 sm:p-8 md:p-10">
         {/* GLOW */}
 
         <div className="absolute left-[10%] top-0 h-48 w-48 rounded-full bg-emerald-400/10 blur-[100px]" />
@@ -51,7 +51,7 @@ export default function FavoritesPage() {
 
           {/* STATS */}
 
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 grid gap-4 sm:mt-12 md:grid-cols-3">
             {[
               {
                 value: '24',
@@ -70,9 +70,11 @@ export default function FavoritesPage() {
             ].map((item) => (
               <div
                 key={item.label}
-                className="rounded-3xl border border-white/6 bg-white/3 p-6"
+                className="rounded-[22px] border border-white/6 bg-white/[0.03] p-5 sm:p-6"
               >
-                <h3 className="text-4xl font-black text-white">{item.value}</h3>
+                <h3 className="text-3xl font-black text-white sm:text-4xl">
+                  {item.value}
+                </h3>
 
                 <p className="mt-3 text-xs uppercase tracking-[0.14em] text-white/40">
                   {item.label}
@@ -85,7 +87,7 @@ export default function FavoritesPage() {
 
       {/* CONTENT */}
 
-      <section className="mt-8 grid gap-8 xl:grid-cols-[1fr_380px]">
+      <section className="mt-6 grid min-w-0 gap-6 sm:mt-8 sm:gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(320px,380px)]">
         {/* LEFT */}
 
         <div>

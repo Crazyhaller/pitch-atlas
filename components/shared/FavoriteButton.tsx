@@ -74,7 +74,7 @@ export default function FavouriteButton({
             opacity: 1,
             scale: 1,
           }}
-          className="absolute inset-0 rounded-inherit bg-emerald-400/10 blur-xl"
+          className="absolute inset-0 rounded-[inherit] bg-emerald-400/10 blur-xl"
         />
       )}
 

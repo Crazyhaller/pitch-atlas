@@ -2,62 +2,86 @@
 
 import { useEffect, useState } from 'react'
 
-import { useDebounce } from './useDebounce'
-
+import { sampleMatches, samplePlayers, sampleTeams } from '@/lib/data/sampleFootball'
 import { SearchResult } from '@/types/ui'
 
-const MOCK_RESULTS: SearchResult[] = [
-  {
-    id: 1,
-    type: 'player',
-    title: 'Marcus Rashford',
-    subtitle: 'FC Barcelona',
-  },
-  {
-    id: 2,
-    type: 'team',
-    title: 'Manchester City',
+import { useDebounce } from './useDebounce'
+
+const SEARCH_INDEX: SearchResult[] = [
+  ...samplePlayers.map((player) => ({
+    id: player.id,
+    type: 'player' as const,
+    title: player.name,
+    subtitle: typeof player.team === 'string' ? player.team : player.team.name,
+  })),
+  ...sampleTeams.map((team) => ({
+    id: team.id,
+    type: 'team' as const,
+    title: team.name,
     subtitle: 'Premier League',
-  },
-  {
-    id: 3,
-    type: 'match',
-    title: 'Manchester City vs Arsenal',
-    subtitle: 'Premier League',
-  },
+  })),
+  ...sampleMatches.map((match) => ({
+    id: match.id,
+    type: 'match' as const,
+    title: `${match.homeTeam.name} vs ${match.awayTeam.name}`,
+    subtitle: `${match.league.name} - ${match.status.long}`,
+  })),
 ]
+
+function scoreResult(query: string, result: SearchResult) {
+  const haystack = `${result.title} ${result.subtitle ?? ''}`.toLowerCase()
+
+  if (haystack.includes(query)) {
+    return query.length / haystack.length
+  }
+
+  let cursor = 0
+
+  for (const letter of query) {
+    const nextIndex = haystack.indexOf(letter, cursor)
+
+    if (nextIndex === -1) {
+      return 0
+    }
+
+    cursor = nextIndex + 1
+  }
+
+  return 0.18
+}
 
 export function useSearch(query: string) {
   const debouncedQuery = useDebounce(query)
-
   const [results, setResults] = useState<SearchResult[]>([])
-
-  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (!debouncedQuery.trim()) {
-      setResults([])
+      const timer = window.setTimeout(() => {
+        setResults([])
+      }, 0)
 
-      return
+      return () => window.clearTimeout(timer)
     }
 
-    setLoading(true)
+    const timer = window.setTimeout(() => {
+      const normalizedQuery = debouncedQuery.trim().toLowerCase()
+      const filtered = SEARCH_INDEX.map((item) => ({
+        item,
+        score: scoreResult(normalizedQuery, item),
+      }))
+        .filter((item) => item.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 8)
+        .map(({ item }) => item)
 
-    const filtered = MOCK_RESULTS.filter((item) =>
-      item.title.toLowerCase().includes(debouncedQuery.toLowerCase()),
-    )
-
-    const timer = setTimeout(() => {
       setResults(filtered)
-
-      setLoading(false)
     }, 300)
 
-    return () => clearTimeout(timer)
+    return () => window.clearTimeout(timer)
   }, [debouncedQuery])
 
   return {
     results,
-    loading,
+    loading: Boolean(query.trim() && query !== debouncedQuery),
   }
 }

@@ -17,7 +17,7 @@ import { APP_ROUTES } from '@/constants/routes'
 
 export default function CTASection() {
   return (
-    <section className="section-spacing relative overflow-hidden">
+    <section id="explorer" className="section-spacing relative overflow-hidden">
       {/* BACKGROUND */}
 
       <div className="absolute inset-0">

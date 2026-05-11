@@ -38,34 +38,67 @@ const matchTabs = [
 
 export default function MatchesPage() {
   const [activeTab, setActiveTab] = useState('all')
+  const [searchQuery, setSearchQuery] = useState('')
 
   const { matches, loading, error } = useMatches()
 
   const filteredMatches = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase()
+    const queryFilteredMatches = normalizedQuery
+      ? matches.filter((match) => {
+          const haystack = [
+            match.homeTeam.name,
+            match.homeTeam.shortName,
+            match.awayTeam.name,
+            match.awayTeam.shortName,
+            match.league.name,
+            match.status.long,
+            match.status.short,
+          ]
+            .filter(Boolean)
+            .join(' ')
+            .toLowerCase()
+
+          return haystack.includes(normalizedQuery)
+        })
+      : matches
+
     if (activeTab === 'all') {
-      return matches
+      return queryFilteredMatches
     }
 
     if (activeTab === 'live') {
-      return matches.filter((match) => match.status.short === 'LIVE')
+      const liveStatuses = new Set(['LIVE', 'IN_PLAY', 'PAUSED', 'HT'])
+
+      return queryFilteredMatches.filter((match) =>
+        liveStatuses.has(match.status.short),
+      )
     }
 
     if (activeTab === 'finished') {
-      return matches.filter((match) => match.status.short === 'FT')
+      const finishedStatuses = new Set(['FT', 'FINISHED', 'AWARDED'])
+
+      return queryFilteredMatches.filter((match) =>
+        finishedStatuses.has(match.status.short),
+      )
     }
 
     if (activeTab === 'scheduled') {
-      return matches.filter((match) => match.status.short === 'NS')
+      const scheduledStatuses = new Set(['NS', 'TIMED', 'SCHEDULED'])
+
+      return queryFilteredMatches.filter((match) =>
+        scheduledStatuses.has(match.status.short),
+      )
     }
 
-    return matches
-  }, [matches, activeTab])
+    return queryFilteredMatches
+  }, [matches, activeTab, searchQuery])
 
   return (
     <DashboardLayout>
       {/* HERO */}
 
-      <section className="relative overflow-hidden rounded-[36px] border border-white/8 bg-[#08111f]/75 p-8 shadow-[0_0_100px_rgba(56,255,156,0.08)] backdrop-blur-2xl md:p-10">
+      <section className="premium-panel relative z-20 overflow-visible rounded-[28px] p-6 sm:p-8 md:p-10">
         {/* GLOW */}
 
         <div className="absolute left-[10%] top-0 h-48 w-48 rounded-full bg-emerald-400/10 blur-[100px]" />
@@ -79,8 +112,8 @@ export default function MatchesPage() {
         <div className="relative z-10">
           {/* HEADER */}
 
-          <div className="flex flex-col gap-8 xl:flex-row xl:items-center xl:justify-between">
-            <div className="max-w-3xl">
+          <div className="flex min-w-0 flex-col gap-8 xl:flex-row xl:items-center xl:justify-between">
+            <div className="min-w-0 max-w-3xl">
               <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-emerald-400/15 bg-emerald-400/10 px-5 py-2">
                 <div className="h-2 w-2 rounded-full bg-[#38FF9C]" />
 
@@ -103,39 +136,27 @@ export default function MatchesPage() {
 
             {/* QUICK STATS */}
 
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4 xl:w-130">
+            <div className="grid w-full grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 xl:w-130">
               {[
-                {
-                  label: 'Matches',
-                  value: matches.length,
-                },
-
+                { label: 'Matches', value: matches.length },
                 {
                   label: 'Live Terrain',
                   value: filteredMatches.filter(
                     (match) => match.status.short === 'LIVE',
                   ).length,
                 },
-
-                {
-                  label: 'Momentum Peaks',
-                  value: '91%',
-                },
-
-                {
-                  label: 'Traversal',
-                  value: '8.4M',
-                },
+                { label: 'Momentum Peaks', value: '91%' },
+                { label: 'Traversal', value: '8.4M' },
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-3xl border border-white/6 bg-white/3 p-5"
+                  className="rounded-[18px] border border-white/6 bg-white/[0.03] p-3 sm:p-4 flex flex-col items-center justify-center text-center"
                 >
-                  <h3 className="text-3xl font-black text-white">
+                  <h3 className="text-lg font-black text-white sm:text-xl">
                     {item.value}
                   </h3>
 
-                  <p className="mt-2 text-xs uppercase tracking-[0.14em] text-white/40">
+                  <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-white/40">
                     {item.label}
                   </p>
                 </div>
@@ -146,7 +167,11 @@ export default function MatchesPage() {
           {/* SEARCH */}
 
           <div className="mt-10">
-            <SearchBar placeholder="Search football matches..." />
+            <SearchBar
+              value={searchQuery}
+              onQueryChange={setSearchQuery}
+              placeholder="Search clubs, leagues, statuses..."
+            />
           </div>
 
           {/* FILTERS */}
@@ -163,7 +188,7 @@ export default function MatchesPage() {
 
       {/* CONTENT */}
 
-      <section className="mt-8">
+      <section className="relative z-0 mt-6 min-w-0 sm:mt-8">
         {loading && <LoadingSpinner />}
 
         {error && <ErrorState />}

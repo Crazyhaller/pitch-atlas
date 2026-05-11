@@ -12,11 +12,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="min-h-screen bg-[#050816]">
       <Navbar />
 
-      <div className="flex">
+      <div className="flex min-w-0">
         <AppSidebar />
 
-        <main className="min-h-screen flex-1 overflow-hidden pt-24">
-          <div className="container-wrapper py-8">{children}</div>
+        <main className="min-w-0 flex-1 overflow-x-clip pt-20 sm:pt-24">
+          <div className="container-wrapper py-5 sm:py-8">{children}</div>
         </main>
       </div>
     </div>

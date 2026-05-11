@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface PlayerState {
   selectedPlayerId: number | null
@@ -14,7 +14,7 @@ const playerSlice = createSlice({
   initialState,
 
   reducers: {
-    setSelectedPlayer(state, action) {
+    setSelectedPlayer(state, action: PayloadAction<number | null>) {
       state.selectedPlayerId = action.payload
     },
   },

@@ -14,7 +14,7 @@ export default function TeamStatsCard({ team }: TeamStatsCardProps) {
       whileHover={{
         y: -6,
       }}
-      className="group relative overflow-hidden rounded-[30px] border border-white/8 bg-[#08111f]/75 p-6 backdrop-blur-2xl"
+      className="premium-panel group relative min-w-0 overflow-hidden rounded-[24px] p-5 sm:p-6"
     >
       {/* GLOW */}
 
@@ -23,8 +23,8 @@ export default function TeamStatsCard({ team }: TeamStatsCardProps) {
       <div className="relative z-10">
         {/* HEADER */}
 
-        <div className="flex items-start justify-between gap-5">
-          <div className="flex items-center gap-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex min-w-0 items-center gap-4">
             <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-3xl border border-white/8 bg-[#0b1524]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -34,23 +34,25 @@ export default function TeamStatsCard({ team }: TeamStatsCardProps) {
               />
             </div>
 
-            <div>
-              <h3 className="text-2xl font-black text-white">
+            <div className="min-w-0">
+              <h3 className="truncate text-2xl font-black text-white">
                 {team.shortName}
               </h3>
 
-              <p className="mt-1 text-sm text-white/45">{team.area.name}</p>
+              <p className="mt-1 text-sm text-white/45">
+                {team.area?.name ?? 'Global'}
+              </p>
             </div>
           </div>
 
-          <div className="rounded-full border border-emerald-400/15 bg-emerald-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#38FF9C]">
+          <div className="shrink-0 rounded-full border border-emerald-400/15 bg-emerald-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#38FF9C]">
             Active
           </div>
         </div>
 
         {/* STATS */}
 
-        <div className="mt-8 grid grid-cols-2 gap-4">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4">
           {[
             {
               label: 'Founded',
@@ -74,7 +76,7 @@ export default function TeamStatsCard({ team }: TeamStatsCardProps) {
           ].map((item) => (
             <div
               key={item.label}
-              className="rounded-2xl border border-white/6 bg-white/3 p-5"
+              className="rounded-[18px] border border-white/6 bg-white/[0.03] p-4 sm:p-5"
             >
               <p className="text-xs uppercase tracking-[0.14em] text-white/35">
                 {item.label}

@@ -1,24 +1,28 @@
 'use client'
 
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 export function useLocalStorage<T>(
   key: string,
   initialValue: T,
 ): [T, Dispatch<SetStateAction<T>>] {
-  const [storedValue, setStoredValue] = useState<T>(initialValue)
-
-  useEffect(() => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
     try {
+      if (typeof window === 'undefined') {
+        return initialValue
+      }
+
       const item = window.localStorage.getItem(key)
 
       if (item) {
-        setStoredValue(JSON.parse(item))
+        return JSON.parse(item) as T
       }
-    } catch (error) {
-      console.error('Failed to read localStorage:', error)
+    } catch {
+      return initialValue
     }
-  }, [key])
+
+    return initialValue
+  })
 
   const setValue: Dispatch<SetStateAction<T>> = (value) => {
     try {
@@ -28,8 +32,8 @@ export function useLocalStorage<T>(
       setStoredValue(valueToStore)
 
       window.localStorage.setItem(key, JSON.stringify(valueToStore))
-    } catch (error) {
-      console.error('Failed to save localStorage:', error)
+    } catch {
+      setStoredValue(initialValue)
     }
   }
 

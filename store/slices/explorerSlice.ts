@@ -1,19 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface ExplorerEvent {
-  id: number
-  minute: number
-  x: number
-  y: number
-  type: string
-  player: string
-}
+import { MatchEvent } from '@/types/match'
 
 interface ExplorerState {
   playing: boolean
   speed: number
   currentTime: number
-  selectedEvent: ExplorerEvent | null
+  selectedEvent: MatchEvent | null
 }
 
 const initialState: ExplorerState = {
@@ -41,7 +34,7 @@ const explorerSlice = createSlice({
       state.currentTime = action.payload
     },
 
-    setSelectedEvent(state, action: PayloadAction<ExplorerEvent | null>) {
+    setSelectedEvent(state, action: PayloadAction<MatchEvent | null>) {
       state.selectedEvent = action.payload
     },
   },

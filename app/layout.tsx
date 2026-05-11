@@ -98,7 +98,7 @@ export const metadata: Metadata = {
 
     images: [
       {
-        url: '/images/ui/og-image.png',
+        url: 'https://pitchAtlas.vercel.app/og-image.png',
 
         width: 1200,
 
@@ -117,7 +117,7 @@ export const metadata: Metadata = {
     description:
       'Immersive football analytics reimagined as terrain exploration.',
 
-    images: ['/images/ui/og-image.png'],
+    images: ['https://pitchAtlas.vercel.app/og-image.png'],
   },
 
   robots: {
@@ -127,11 +127,11 @@ export const metadata: Metadata = {
   },
 
   icons: {
-    icon: '/icons/favicon.ico',
+    icon: 'https://pitchAtlas.vercel.app/favicon.ico',
 
-    shortcut: '/icons/favicon.ico',
+    shortcut: 'https://pitchAtlas.vercel.app/favicon.ico',
 
-    apple: '/icons/apple-touch-icon.png',
+    apple: 'https://pitchAtlas.vercel.app/apple-touch-icon.png',
   },
 }
 
