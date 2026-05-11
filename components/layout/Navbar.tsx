@@ -18,7 +18,7 @@ import {
 
 import { useEffect, useState } from 'react'
 
-import { APP_ROUTES, LANDING_LINKS } from '@/constants/routes'
+import { APP_ROUTES, LANDING_LINKS, PUBLIC_ROUTES } from '@/constants/routes'
 
 const appNavigation = [
   {
@@ -173,11 +173,13 @@ export default function Navbar() {
 
           {/* CTA */}
 
-          <div className="hidden items-center gap-3 lg:flex">
-            <Link href={APP_ROUTES.DASHBOARD} className="btn-primary">
-              Launch Platform
-            </Link>
-          </div>
+          {(pathname === '/' || pathname === '/explore-preview') && (
+            <div className="hidden items-center gap-3 lg:flex">
+              <Link href={APP_ROUTES.DASHBOARD} className="btn-primary">
+                Launch Platform
+              </Link>
+            </div>
+          )}
 
           {/* MOBILE TOGGLE */}
 
@@ -233,12 +235,14 @@ export default function Navbar() {
               </Link>
             ))}
 
-            <Link
-              href={APP_ROUTES.DASHBOARD}
-              className="btn-primary mt-4 justify-center"
-            >
-              Launch Platform
-            </Link>
+            {(pathname === '/' || pathname === '/explore-preview') && (
+              <Link
+                href={APP_ROUTES.DASHBOARD}
+                className="btn-primary mt-4 justify-center"
+              >
+                Launch Platform
+              </Link>
+            )}
           </div>
         </div>
       </motion.div>
